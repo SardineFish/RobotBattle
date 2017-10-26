@@ -36,12 +36,17 @@ public class Control : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            rigidbody.AddForce(transform.up * player.JumpForce, ForceMode.Impulse);
+            player.Jump();
         }
         moveDirection = moveDirection.normalized;
         //transform.Translate(player.Speed* Time.deltaTime * moveDirection);
-        if (player.OnGround)
-            rigidbody.AddForce(moveDirection * player.MoveForce, ForceMode.Impulse);
+        
+        rigidbody.AddForce(moveDirection * player.MoveForce, ForceMode.Impulse);
+        if (!player.OnGround)
+        {
+            if (Vector3.Dot(moveDirection, player.Velocity) < 0)
+                rigidbody.AddForce(-player.Velocity.normalized * Vector3.Dot(moveDirection, -player.Velocity.normalized) * player.ForceFly, ForceMode.Impulse);
+        }
         //var speed = moveDirection * player.Speed;
         //characterController.SimpleMove(speed);
 	}
