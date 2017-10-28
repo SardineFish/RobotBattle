@@ -14,9 +14,11 @@ public class Player : MonoBehaviour {
     public bool OnGround = false;
     public int MaxJump = 2;
     public int JumpCount = 0;
+    public float ShootDuration = 1;
     new Rigidbody rigidbody;
     BoxCollider footCollider;
     CapsuleCollider bodyCollider;
+    float lastShootTime = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -80,15 +82,21 @@ public class Player : MonoBehaviour {
 
     public void Shoot()
     {
+        if (Time.time - lastShootTime < ShootDuration)
+            return;
+        lastShootTime = Time.time;
         var gunLeft = transform.Find("Wrap/Hands/Gun-L/Gun-Inside/Gun-Barrel").gameObject;
-        var gunRight = transform.Find("Wrap/Hands/Gun-R/Gun-Inside/Gun-Barel").gameObject;
+        var gunRight = transform.Find("Wrap/Hands/Gun-R/Gun-Inside/Gun-Barrel").gameObject;
         var rayL = new Ray(gunLeft.transform.position, -gunLeft.transform.right);
         var rayR = new Ray(gunRight.transform.position, -gunRight.transform.right);
         Debug.DrawLine(rayL.origin, rayL.origin + rayL.direction * 100, Color.red);
         Debug.DrawLine(rayR.origin, rayR.origin + rayR.direction * 100, Color.red);
-        var bulletL = Resources.Load("Bullet") as GameObject;
+        var bulletL = Instantiate(Resources.Load("Bullet") as GameObject);
+        var bulletR = Instantiate(Resources.Load("Bullet") as GameObject);
         bulletL.transform.position = gunLeft.transform.position;
-        var bulletR = Resources.Load("Bullet") as GameObject;
-        bulletR.transform.position = gunLeft.transform.position;
+        bulletR.transform.position = gunRight.transform.position;
+        bulletL.transform.rotation = Quaternion.LookRotation(rayL.direction);
+        bulletR.transform.rotation = Quaternion.LookRotation(rayR.direction);
+        var x = bulletL.transform.forward;
     }
 }
