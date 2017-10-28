@@ -43,10 +43,11 @@ public class Control : MonoBehaviour {
         //transform.Translate(player.Speed* Time.deltaTime * moveDirection);
         
         rigidbody.AddForce(moveDirection * player.MoveForce, ForceMode.Impulse);
+        var v = Vector3.Scale(player.Velocity, new Vector3(1, 0, 1));
         if (!player.OnGround)
         {
-            if (Vector3.Dot(moveDirection, player.Velocity) < 0)
-                rigidbody.AddForce(-player.Velocity.normalized * Vector3.Dot(moveDirection, -player.Velocity.normalized) * player.ForceFly, ForceMode.Impulse);
+            if (Vector3.Dot(moveDirection, v) < 0)
+                rigidbody.AddForce(-v.normalized * Vector3.Dot(moveDirection, -v.normalized) * player.ForceFly, ForceMode.Impulse);
         }
         #endregion
 

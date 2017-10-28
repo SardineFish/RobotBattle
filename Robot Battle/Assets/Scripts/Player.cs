@@ -15,17 +15,27 @@ public class Player : MonoBehaviour {
     public int MaxJump = 2;
     public int JumpCount = 0;
     new Rigidbody rigidbody;
+    BoxCollider footCollider;
+    CapsuleCollider bodyCollider;
 
 	// Use this for initialization
 	void Start () {
         rigidbody = GetComponent<Rigidbody>();
+        footCollider = GetComponent<BoxCollider>();
+        bodyCollider = GetComponent<CapsuleCollider>();
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
         var v = (Vector3.Scale(rigidbody.velocity, new Vector3(1, 0, 1)));
-        this.Velocity = v;
+        this.Velocity = rigidbody.velocity;
+        /*if (this.Velocity.y < 0.01)
+        {
+            this.OnGround = true;
+            this.JumpCount = 0;
+        }*/
+        
         if (this.OnGround)
         {
             if (v.magnitude == 0)
@@ -49,21 +59,14 @@ public class Player : MonoBehaviour {
             }
         }
 	}
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.tag == "Ground")
-        {
-            OnGround = true;
-            JumpCount = 0;
-        }
+        OnGround = true;
+        JumpCount = 0;
     }
-
-    private void OnCollisionExit(Collision collision)
+    private void OnTriggerExit(Collider other)
     {
-        if (collision.gameObject.tag == "Ground")
-        {
-            OnGround = false;
-        }
+        OnGround = false;
     }
 
     public void Jump()
