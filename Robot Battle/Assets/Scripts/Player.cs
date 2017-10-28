@@ -77,4 +77,18 @@ public class Player : MonoBehaviour {
             JumpCount++;
         }
     }
+
+    public void Shoot()
+    {
+        var gunLeft = transform.Find("Wrap/Hands/Gun-L/Gun-Inside/Gun-Barrel").gameObject;
+        var gunRight = transform.Find("Wrap/Hands/Gun-R/Gun-Inside/Gun-Barel").gameObject;
+        var rayL = new Ray(gunLeft.transform.position, -gunLeft.transform.right);
+        var rayR = new Ray(gunRight.transform.position, -gunRight.transform.right);
+        Debug.DrawLine(rayL.origin, rayL.origin + rayL.direction * 100, Color.red);
+        Debug.DrawLine(rayR.origin, rayR.origin + rayR.direction * 100, Color.red);
+        var bulletL = Resources.Load("Bullet") as GameObject;
+        bulletL.transform.position = gunLeft.transform.position;
+        var bulletR = Resources.Load("Bullet") as GameObject;
+        bulletR.transform.position = gunLeft.transform.position;
+    }
 }

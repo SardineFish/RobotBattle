@@ -60,7 +60,20 @@ public class Control : MonoBehaviour {
         transform.Rotate(transform.up, hor);
         var hands = transform.Find("Wrap/Hands");
         hands.Rotate(0, ver, 0, Space.Self);
-        Debug.DrawLine(hands.position, hands.position + hands.transform.localToWorldMatrix.MultiplyVector(Vector3.up) * 20, Color.blue);
+
+        if (Input.GetKey(KeyCode.Mouse0))
+        {
+            var gunLeft = transform.Find("Wrap/Hands/Gun-L/Gun-Inside").gameObject;
+            var gunRight = transform.Find("Wrap/Hands/Gun-R/Gun-Inside").gameObject;
+            var rayL = new Ray(gunLeft.transform.position, -gunLeft.transform.right);
+            var rayR = new Ray(gunRight.transform.position, -gunRight.transform.right);
+            Debug.DrawLine(rayL.origin, rayL.origin + rayL.direction * 100, Color.red);
+            Debug.DrawLine(rayR.origin, rayR.origin + rayR.direction * 100, Color.red);
+            
+
+        }
+
+        
 
         #endregion  
 
