@@ -7,16 +7,17 @@ public class Control : MonoBehaviour {
     Vector3 moveDirection;
     Player player;
     CharacterController characterController;
-
-	// Use this for initialization
-	void Start () {
+    public float MouseSensitivity = 3;
+    
+    void Start () {
         rigidbody = GetComponent<Rigidbody>();
         player = GetComponent<Player>();
         characterController = GetComponent<CharacterController>();
 	}
 	
-	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
+        #region Move
         moveDirection = Vector3.zero;
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
@@ -47,7 +48,20 @@ public class Control : MonoBehaviour {
             if (Vector3.Dot(moveDirection, player.Velocity) < 0)
                 rigidbody.AddForce(-player.Velocity.normalized * Vector3.Dot(moveDirection, -player.Velocity.normalized) * player.ForceFly, ForceMode.Impulse);
         }
-        //var speed = moveDirection * player.Speed;
-        //characterController.SimpleMove(speed);
-	}
+        #endregion
+
+        #region Mouse
+
+        var hor = Input.GetAxis("Mouse X");
+        var ver = Input.GetAxis("Mouse Y");
+        hor *= MouseSensitivity;
+        ver *= MouseSensitivity;
+        transform.Rotate(transform.up, hor);
+        var hands = transform.Find("Wrap/Hands");
+        hands.Rotate(0, ver, 0, Space.Self);
+        Debug.DrawLine(hands.position, hands.position + hands.transform.localToWorldMatrix.MultiplyVector(Vector3.up) * 20, Color.blue);
+
+        #endregion  
+
+    }
 }
