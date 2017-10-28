@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: eaa63667dc7a9814b8a8b528866efc3d
-timeCreated: 1509008960
+guid: 6f46a2d6bf14cdf41847f5d56c77483f
+timeCreated: 1509188650
 licenseType: Free
 ModelImporter:
   serializedVersion: 21
@@ -32,24 +32,16 @@ ModelImporter:
     100048: Light-L001
     100050: Light-R
     100052: Light-R001
-    100054: PhysCamera001
-    100056: PhysCamera001.Target
-    100058: PhysCamera002
-    100060: PhysCamera002.Target
-    100062: PhysCamera003
-    100064: PhysCamera003.Target
-    100066: PhysCamera004
-    100068: PhysCamera004.Target
-    100070: //RootNode
-    100072: Robot
-    100074: Robot-Red
-    100076: Shield-L
-    100078: Shield-L001
-    100080: Shield-R
-    100082: Shield-R001
-    100084: skpCamera001
-    100086: "skpCamera001.\u76EE\u6807"
-    100088: VRayLight001
+    100054: Robot
+    100056: //RootNode
+    100058: Robot-Red
+    100060: Shield-L
+    100062: Shield-L001
+    100064: Shield-R
+    100066: Shield-R001
+    100068: skpCamera001
+    100070: "skpCamera001.\u76EE\u6807"
+    100072: VRayLight001
     400000: Aerial
     400002: Aerial001
     400004: Body
@@ -77,24 +69,16 @@ ModelImporter:
     400048: Light-L001
     400050: Light-R
     400052: Light-R001
-    400054: PhysCamera001
-    400056: PhysCamera001.Target
-    400058: PhysCamera002
-    400060: PhysCamera002.Target
-    400062: PhysCamera003
-    400064: PhysCamera003.Target
-    400066: PhysCamera004
-    400068: PhysCamera004.Target
-    400070: //RootNode
-    400072: Robot
-    400074: Robot-Red
-    400076: Shield-L
-    400078: Shield-L001
-    400080: Shield-R
-    400082: Shield-R001
-    400084: skpCamera001
-    400086: "skpCamera001.\u76EE\u6807"
-    400088: VRayLight001
+    400054: //RootNode
+    400056: Robot
+    400058: Robot-Red
+    400060: Shield-L
+    400062: Shield-L001
+    400064: Shield-R
+    400066: Shield-R001
+    400068: skpCamera001
+    400070: "skpCamera001.\u76EE\u6807"
+    400072: VRayLight001
     2300000: Aerial
     2300002: Aerial001
     2300004: Body
