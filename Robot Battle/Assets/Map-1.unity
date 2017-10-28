@@ -669,6 +669,48 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 276245177}
   m_Mesh: {fileID: 4300052, guid: 6f46a2d6bf14cdf41847f5d56c77483f, type: 3}
+--- !u!1001 &311902918
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4093769944392214, guid: d53382f6b0a89a3418096f81333fbe5a, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4093769944392214, guid: d53382f6b0a89a3418096f81333fbe5a, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4093769944392214, guid: d53382f6b0a89a3418096f81333fbe5a, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4093769944392214, guid: d53382f6b0a89a3418096f81333fbe5a, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4093769944392214, guid: d53382f6b0a89a3418096f81333fbe5a, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4093769944392214, guid: d53382f6b0a89a3418096f81333fbe5a, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4093769944392214, guid: d53382f6b0a89a3418096f81333fbe5a, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4093769944392214, guid: d53382f6b0a89a3418096f81333fbe5a, type: 2}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: d53382f6b0a89a3418096f81333fbe5a, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &377252587
 GameObject:
   m_ObjectHideFlags: 0
@@ -1279,48 +1321,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 650476552}
   m_Mesh: {fileID: 4300010, guid: 6f46a2d6bf14cdf41847f5d56c77483f, type: 3}
---- !u!1001 &662185779
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4214241646931390, guid: d53382f6b0a89a3418096f81333fbe5a, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4214241646931390, guid: d53382f6b0a89a3418096f81333fbe5a, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4214241646931390, guid: d53382f6b0a89a3418096f81333fbe5a, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4214241646931390, guid: d53382f6b0a89a3418096f81333fbe5a, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4214241646931390, guid: d53382f6b0a89a3418096f81333fbe5a, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4214241646931390, guid: d53382f6b0a89a3418096f81333fbe5a, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4214241646931390, guid: d53382f6b0a89a3418096f81333fbe5a, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 4214241646931390, guid: d53382f6b0a89a3418096f81333fbe5a, type: 2}
-      propertyPath: m_RootOrder
-      value: 6
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: d53382f6b0a89a3418096f81333fbe5a, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1 &764312538
 GameObject:
   m_ObjectHideFlags: 0
@@ -1789,7 +1789,7 @@ MonoBehaviour:
   OnGround: 0
   MaxJump: 2
   JumpCount: 0
-  ShootDuration: 1
+  ShootDuration: 0.2
 --- !u!1 &1241332794
 GameObject:
   m_ObjectHideFlags: 0
@@ -2788,7 +2788,7 @@ MonoBehaviour:
   OnGround: 0
   MaxJump: 2
   JumpCount: 0
-  ShootDuration: 1
+  ShootDuration: 0.1
 --- !u!114 &1892449700
 MonoBehaviour:
   m_ObjectHideFlags: 0

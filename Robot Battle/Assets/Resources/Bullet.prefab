@@ -65,7 +65,7 @@ Transform:
   m_GameObject: {fileID: 1756016933286256}
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 10}
   m_Children: []
   m_Father: {fileID: 4093769944392214}
   m_RootOrder: 0
@@ -81,7 +81,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66d436828a937034c8c5feb1e90674f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BulletSpeed: 100
+  BulletSpeed: 1000
   BulletLifeTime: 1
 --- !u!120 &120572449912450938
 LineRenderer:
