@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour {
+public class Player : MonoBehaviour
+{
     public float Speed = 0;
     public float MoveForce = 1;
     public float MaxForce = 10;
     public float Power = 10;
-    public Vector3 Velocity ;
+    public Vector3 Velocity;
     public float JumpForce = 10;
     public float ForceFly = 5;
     public float PowerFly = 1;
@@ -16,20 +17,24 @@ public class Player : MonoBehaviour {
     public int JumpCount = 0;
     public float ShootDuration = 1;
     public float VisualDistance = 500;
+    public float ShootImpact = 1;
+
+    public float MaxTurnSpeed = 180;
     new Rigidbody rigidbody;
     BoxCollider footCollider;
     CapsuleCollider bodyCollider;
     float lastShootTime = 0;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         rigidbody = GetComponent<Rigidbody>();
         footCollider = GetComponent<BoxCollider>();
         bodyCollider = GetComponent<CapsuleCollider>();
-	}
-	
-	// Update is called once per frame
-	void Update ()
+    }
+
+    // Update is called once per frame
+    void Update()
     {
         var v = (Vector3.Scale(rigidbody.velocity, new Vector3(1, 0, 1)));
         this.Velocity = rigidbody.velocity;
@@ -38,7 +43,7 @@ public class Player : MonoBehaviour {
             this.OnGround = true;
             this.JumpCount = 0;
         }*/
-        
+
         if (this.OnGround)
         {
             if (v.magnitude == 0)
@@ -61,7 +66,7 @@ public class Player : MonoBehaviour {
                     this.MoveForce = this.ForceFly;
             }
         }
-	}
+    }
     private void OnTriggerEnter(Collider other)
     {
         OnGround = true;
@@ -105,8 +110,12 @@ public class Player : MonoBehaviour {
     {
         var hands = transform.Find("Wrap/Hands");
         var rotation = Quaternion.LookRotation(forward);
-        var hor = rotation.eulerAngles.y - this.transform.rotation.eulerAngles.y;
-        var ver = -(rotation.eulerAngles.x + hands.localEulerAngles.y);
+        var hor = LimitAngle(rotation.eulerAngles.y - this.transform.rotation.eulerAngles.y);
+        var ver = LimitAngle(-(rotation.eulerAngles.x + hands.localEulerAngles.y));
+        if (Mathf.Abs(hor) > MaxTurnSpeed * Time.deltaTime)
+            hor = Mathf.Sign(hor) * MaxTurnSpeed * Time.deltaTime;
+        if (Mathf.Abs(ver) > MaxTurnSpeed * Time.deltaTime)
+            ver = Mathf.Sign(ver) * MaxTurnSpeed * Time.deltaTime;
         transform.Rotate(0, hor, 0, Space.Self);
         hands.Rotate(0, ver, 0, Space.Self);
         var ray = new Ray(hands.position, -hands.right);
@@ -116,11 +125,11 @@ public class Player : MonoBehaviour {
         var gunR = transform.Find("Wrap/Hands/Gun-R");
         gunL.localRotation = new Quaternion();
         gunR.localRotation = new Quaternion();
-        if(Physics.Raycast(ray,out hit,VisualDistance))
+        if (Physics.Raycast(ray, out hit, VisualDistance))
         {
             Debug.DrawLine(hit.point, hit.point + new Vector3(20, 0, 0), Color.red);
-            Debug.DrawLine(hit.point, hit.point + new Vector3(0,20, 0), Color.green);
-            Debug.DrawLine(hit.point, hit.point + new Vector3(0, 0,20), Color.blue);
+            Debug.DrawLine(hit.point, hit.point + new Vector3(0, 20, 0), Color.green);
+            Debug.DrawLine(hit.point, hit.point + new Vector3(0, 0, 20), Color.blue);
 
             var point = hit.point;
             var gunLForward = -gunL.right;
@@ -128,10 +137,23 @@ public class Player : MonoBehaviour {
             var turnL = Quaternion.Angle(Quaternion.LookRotation(gunLForward), Quaternion.LookRotation(point - gunL.position));
             var turnR = Quaternion.Angle(Quaternion.LookRotation(gunRForward), Quaternion.LookRotation(point - gunR.position));
             //var turnR = Quaternion.FromToRotation(gunRForward, point - gunR.position);
-            gunL.Rotate(0,0,turnL);
-            gunR.Rotate(0,0,-turnR);
+            gunL.Rotate(0, 0, turnL);
+            gunR.Rotate(0, 0, -turnR);
         }
     }
 
-    
+    public void OnShotCallback(Player shooter, Vector3 direction, float Damage)
+    {
+
+    }
+
+    float LimitAngle(float angle)
+    {
+        angle -= ((int)(angle / 360)) * 360;
+        if (angle > 180)
+            return angle - 360;
+        else if (angle < -180)
+            return angle + 360;
+        return angle;
+    }
 }
