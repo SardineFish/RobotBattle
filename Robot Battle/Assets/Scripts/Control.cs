@@ -7,8 +7,8 @@ public class Control : MonoBehaviour {
     Vector3 moveDirection;
     Player player;
     CharacterController characterController;
-    public float MouseSensitivity = 3;
-    
+    public GameObject ControlCamera = null;
+
     void Start () {
         rigidbody = GetComponent<Rigidbody>();
         player = GetComponent<Player>();
@@ -51,24 +51,21 @@ public class Control : MonoBehaviour {
         }
         #endregion
 
-        #region Mouse
-
-        var hor = Input.GetAxis("Mouse X");
-        var ver = Input.GetAxis("Mouse Y");
-        hor *= MouseSensitivity;
-        ver *= MouseSensitivity;
-        transform.Rotate(transform.up, hor);
-        var hands = transform.Find("Wrap/Hands");
-        hands.Rotate(0, ver, 0, Space.Self);
-
         if (Input.GetKey(KeyCode.Mouse0))
         {
             player.Shoot();
         }
 
-        
+        #region FollowCamera
 
-        #endregion  
+        if (ControlCamera)
+        {
+            var forward = ControlCamera.transform.forward;
+            player.LookAt(forward);
+
+        }
+
+        #endregion
 
     }
 }

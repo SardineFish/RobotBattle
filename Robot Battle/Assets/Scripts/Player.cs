@@ -15,6 +15,7 @@ public class Player : MonoBehaviour {
     public int MaxJump = 2;
     public int JumpCount = 0;
     public float ShootDuration = 1;
+    public float VisualDistance = 500;
     new Rigidbody rigidbody;
     BoxCollider footCollider;
     CapsuleCollider bodyCollider;
@@ -99,4 +100,38 @@ public class Player : MonoBehaviour {
         bulletR.transform.rotation = Quaternion.LookRotation(rayR.direction);
         var x = bulletL.transform.forward;
     }
+
+    public void LookAt(Vector3 forward)
+    {
+        var hands = transform.Find("Wrap/Hands");
+        var rotation = Quaternion.LookRotation(forward);
+        var hor = rotation.eulerAngles.y - this.transform.rotation.eulerAngles.y;
+        var ver = -(rotation.eulerAngles.x + hands.localEulerAngles.y);
+        transform.Rotate(0, hor, 0, Space.Self);
+        hands.Rotate(0, ver, 0, Space.Self);
+        var ray = new Ray(hands.position, -hands.right);
+        Debug.DrawLine(ray.origin, ray.origin + ray.direction * VisualDistance, Color.red);
+        RaycastHit hit;
+        var gunL = transform.Find("Wrap/Hands/Gun-L");
+        var gunR = transform.Find("Wrap/Hands/Gun-R");
+        gunL.localRotation = new Quaternion();
+        gunR.localRotation = new Quaternion();
+        if(Physics.Raycast(ray,out hit,VisualDistance))
+        {
+            Debug.DrawLine(hit.point, hit.point + new Vector3(20, 0, 0), Color.red);
+            Debug.DrawLine(hit.point, hit.point + new Vector3(0,20, 0), Color.green);
+            Debug.DrawLine(hit.point, hit.point + new Vector3(0, 0,20), Color.blue);
+
+            var point = hit.point;
+            var gunLForward = -gunL.right;
+            var gunRForward = -gunR.right;
+            var turnL = Quaternion.Angle(Quaternion.LookRotation(gunLForward), Quaternion.LookRotation(point - gunL.position));
+            var turnR = Quaternion.Angle(Quaternion.LookRotation(gunRForward), Quaternion.LookRotation(point - gunR.position));
+            //var turnR = Quaternion.FromToRotation(gunRForward, point - gunR.position);
+            gunL.Rotate(0,0,turnL);
+            gunR.Rotate(0,0,-turnR);
+        }
+    }
+
+    
 }
