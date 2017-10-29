@@ -81,7 +81,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66d436828a937034c8c5feb1e90674f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BulletSpeed: 1000
+  BulletSpeed: 2000
   BulletLifeTime: 1
 --- !u!120 &120572449912450938
 LineRenderer:

@@ -94,8 +94,8 @@ public class Player : MonoBehaviour {
         Debug.DrawLine(rayR.origin, rayR.origin + rayR.direction * 100, Color.red);
         var bulletL = Instantiate(Resources.Load("Bullet") as GameObject);
         var bulletR = Instantiate(Resources.Load("Bullet") as GameObject);
-        bulletL.transform.position = gunLeft.transform.position;
-        bulletR.transform.position = gunRight.transform.position;
+        bulletL.transform.position = gunLeft.transform.position + rayL.direction * 4;
+        bulletR.transform.position = gunRight.transform.position + rayR.direction * 4;
         bulletL.transform.rotation = Quaternion.LookRotation(rayL.direction);
         bulletR.transform.rotation = Quaternion.LookRotation(rayR.direction);
         var x = bulletL.transform.forward;
