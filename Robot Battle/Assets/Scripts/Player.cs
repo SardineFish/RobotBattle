@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Assets.Scripts.AI;
+using Assets.Scripts.Weapons;
 
-public class Player : MonoBehaviour
+public class Player : Assets.Scripts.AI.Entity
 {
     public float Speed = 0;
     public float MoveForce = 1;
@@ -17,12 +19,16 @@ public class Player : MonoBehaviour
     public int JumpCount = 0;
     public float ShootDuration = 1;
     public float VisualDistance = 500;
+    public float VisualRange = 90;
     public float ShootImpact = 1;
-
     public float MaxTurnSpeed = 180;
+    public Ray Looking;
+
+    public List<PositionMemory> PositionMemories = new List<PositionMemory>();
     new Rigidbody rigidbody;
     BoxCollider footCollider;
     CapsuleCollider bodyCollider;
+
     float lastShootTime = 0;
 
     // Use this for initialization
@@ -38,11 +44,8 @@ public class Player : MonoBehaviour
     {
         var v = (Vector3.Scale(rigidbody.velocity, new Vector3(1, 0, 1)));
         this.Velocity = rigidbody.velocity;
-        /*if (this.Velocity.y < 0.01)
-        {
-            this.OnGround = true;
-            this.JumpCount = 0;
-        }*/
+
+        this.Looking = new Ray(transform.Find("Wrap/Hands").position, -transform.Find("Wrap/Hands").right);
 
         if (this.OnGround)
         {
@@ -77,6 +80,24 @@ public class Player : MonoBehaviour
         OnGround = false;
     }
 
+    public void Move(Vector3 direction)
+    {
+        direction = Vector3.Scale(direction, new Vector3(1, 0, 1));
+        rigidbody.AddForce(direction * MoveForce, ForceMode.Impulse);
+    }
+
+    public bool MoveTo(Vector3 target)
+    {
+        var dx = Vector3.Scale(target - transform.position, new Vector3(1, 0, 1));
+        if (dx.magnitude < 0.01)
+            return true;
+        else
+        {
+            Move(dx);
+            return false;
+        }
+    }
+
     public void Jump()
     {
         if (JumpCount < MaxJump)
@@ -88,22 +109,9 @@ public class Player : MonoBehaviour
 
     public void Shoot()
     {
-        if (Time.time - lastShootTime < ShootDuration)
-            return;
-        lastShootTime = Time.time;
-        var gunLeft = transform.Find("Wrap/Hands/Gun-L/Gun-Inside/Gun-Barrel").gameObject;
-        var gunRight = transform.Find("Wrap/Hands/Gun-R/Gun-Inside/Gun-Barrel").gameObject;
-        var rayL = new Ray(gunLeft.transform.position, -gunLeft.transform.right);
-        var rayR = new Ray(gunRight.transform.position, -gunRight.transform.right);
-        Debug.DrawLine(rayL.origin, rayL.origin + rayL.direction * 100, Color.red);
-        Debug.DrawLine(rayR.origin, rayR.origin + rayR.direction * 100, Color.red);
-        var bulletL = Instantiate(Resources.Load("Bullet") as GameObject);
-        var bulletR = Instantiate(Resources.Load("Bullet") as GameObject);
-        bulletL.transform.position = gunLeft.transform.position + rayL.direction * 4;
-        bulletR.transform.position = gunRight.transform.position + rayR.direction * 4;
-        bulletL.transform.rotation = Quaternion.LookRotation(rayL.direction);
-        bulletR.transform.rotation = Quaternion.LookRotation(rayR.direction);
-        var x = bulletL.transform.forward;
+        var gun = GetComponent<Gun>();
+        if (gun != null)
+            gun.Shoot();
     }
 
     public void LookAt(Vector3 forward)
@@ -146,6 +154,7 @@ public class Player : MonoBehaviour
     {
 
     }
+
 
     float LimitAngle(float angle)
     {

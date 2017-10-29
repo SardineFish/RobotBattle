@@ -41,8 +41,7 @@ public class Control : MonoBehaviour {
         }
         moveDirection = moveDirection.normalized;
         //transform.Translate(player.Speed* Time.deltaTime * moveDirection);
-        
-        rigidbody.AddForce(moveDirection * player.MoveForce, ForceMode.Impulse);
+        player.Move(moveDirection);
         var v = Vector3.Scale(player.Velocity, new Vector3(1, 0, 1));
         if (!player.OnGround)
         {
