@@ -195,6 +195,7 @@ GameObject:
   - component: {fileID: 136630925530170886}
   - component: {fileID: 54486553621297436}
   - component: {fileID: 65568499443567560}
+  - component: {fileID: 114557674821890714}
   m_Layer: 0
   m_Name: Robot-Red
   m_TagString: Player
@@ -1215,6 +1216,27 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &114557674821890714
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1579794401217392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b353b4ba60d509741a4699edbed10e44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damage: 20
+  Position: {x: 0, y: 0, z: 0}
+  Name: 
+  Ammo: 2147483647
+  AmmoLoaded: 2147483647
+  AmmoLoadCount: 2147483647
+  FireRange: 500
+  ShootDuration: 0.1
+  BulletSpeed: 2000
+  ImpactForce: 20
 --- !u!114 &114963812553827568
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1242,6 +1264,8 @@ MonoBehaviour:
   VisualRange: 90
   ShootImpact: 1
   MaxTurnSpeed: 10000000
+  HP: 100
+  Defence: 0
 --- !u!136 &136630925530170886
 CapsuleCollider:
   m_ObjectHideFlags: 1

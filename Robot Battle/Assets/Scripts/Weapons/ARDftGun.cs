@@ -47,8 +47,9 @@ namespace Assets.Scripts.Weapons
             this.AmmoLoaded = int.MaxValue;
             this.Damage = 20;
             this.FireRange = 500;
-            this.ShootDuration = 0.1f;
+            this.ShootInterval = 0.1f;
             this.BulletSpeed = 2000;
+            this.ImpactForce = 20;
         }
     }
 }

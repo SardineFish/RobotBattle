@@ -13,8 +13,9 @@ namespace Assets.Scripts.Weapons
         public int AmmoLoaded;
         public int AmmoLoadCount;
         public float FireRange;
-        public float ShootDuration;
+        public float ShootInterval;
         public float BulletSpeed;
+        public float ImpactForce;
 
         float LastShootTime = 0;
 
@@ -35,7 +36,7 @@ namespace Assets.Scripts.Weapons
         }
         public virtual bool Shoot(Ray shootRay)
         {
-            if (Time.time - LastShootTime < ShootDuration)
+            if (Time.time - LastShootTime < ShootInterval)
                 return false;
             if (AmmoLoaded <= 0)
                 return false;
@@ -47,7 +48,7 @@ namespace Assets.Scripts.Weapons
                 if(hit.transform.gameObject.tag == "Player")
                 {
                     var player = hit.transform.gameObject.GetComponent<Player>();
-                    player.OnShotCallback(gameObject.GetComponent<Player>(), shootRay.direction, Damage);
+                    player.OnShotCallback(gameObject.GetComponent<Player>(), shootRay.direction, Damage, ImpactForce);
                 }
             }
             return true;

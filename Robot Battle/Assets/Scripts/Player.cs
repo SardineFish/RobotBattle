@@ -17,12 +17,14 @@ public class Player : Assets.Scripts.AI.Entity
     public bool OnGround = false;
     public int MaxJump = 2;
     public int JumpCount = 0;
-    public float ShootDuration = 1;
     public float VisualDistance = 500;
     public float VisualRange = 90;
     public float ShootImpact = 1;
     public float MaxTurnSpeed = 180;
     public Ray Looking;
+
+    public float HP = 100;
+    public float Defence = 0;
 
     public List<PositionMemory> PositionMemories = new List<PositionMemory>();
     new Rigidbody rigidbody;
@@ -150,9 +152,22 @@ public class Player : Assets.Scripts.AI.Entity
         }
     }
 
-    public void OnShotCallback(Player shooter, Vector3 direction, float Damage)
+    public void OnShotCallback(Player shooter, Vector3 direction, float Damage, float impactForce)
     {
+        this.HP -= Damage;
+        rigidbody.AddForce(direction.normalized * impactForce, ForceMode.Impulse);
+        if (this.HP < 0)
+        {
+            ChangeState(typeof(PlayerDeadState));
+        }
+    }
 
+    public void VisualScan()
+    {
+        foreach(var obj in GameObject.FindGameObjectsWithTag("Player"))
+        {
+
+        }
     }
 
 

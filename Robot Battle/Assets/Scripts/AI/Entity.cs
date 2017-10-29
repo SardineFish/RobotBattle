@@ -8,22 +8,11 @@ namespace Assets.Scripts.AI
 {
     public class Entity : MonoBehaviour
     {
-        State state;
         public State State
         {
             get
             {
-                return state;
-            }
-            set
-            {
-                if (state != null)
-                {
-                    state.OnExit(value);
-                }
-                PreviousState = state;
-                state = value;
-                value.OnEnter(PreviousState);
+                return GetComponent<State>();
             }
         }
 
@@ -33,32 +22,25 @@ namespace Assets.Scripts.AI
         public State GlobalState
         {
             get { return globalState; }
-            set
-            {
-                if (globalState != null)
-                    globalState.OnExit(value);
-                var previous = globalState;
-                globalState = value;
-                value.OnEnter(previous);
-            }
         }
         
-        public void ChangeState(State state)
+        public void ChangeState(Type stateType)
         {
-            State = state;
-        }
-        public void ChangeGlobalState(State state)
-        {
-            this.GlobalState = state;
-        }
-
-        public void OnUpdate(UnityEngine.Time time)
-        {
-            if (GlobalState != null)
-                GlobalState.OnUpdate(time);
-            if (State != null)
-                State.OnUpdate(time);
-
+            if (!stateType.IsSubclassOf(typeof(State)))
+            {
+                throw new Exception("A State required.");
+            }
+            var state = GetComponent<State>();
+            Type previouseType = null;
+            if (state != null)
+            {
+                state.OnExit(stateType);
+                previouseType = state.GetType();
+            }
+            GameObject.Destroy(state);
+            var nextState = gameObject.AddComponent(stateType) as State;
+            if (previouseType != null)
+                nextState.OnEnter(previouseType);
         }
 
         public static Entity Create(GameObject gameObject)

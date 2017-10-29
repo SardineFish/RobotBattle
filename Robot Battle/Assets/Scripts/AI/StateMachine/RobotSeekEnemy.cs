@@ -7,10 +7,6 @@ namespace Assets.Scripts.AI
 {
     public class RobotSeekEnemy : State
     {
-        public RobotSeekEnemy(Entity entity) : base(entity)
-        {
-        }
-
         
     }
 }
