@@ -18,7 +18,14 @@ namespace Assets.Waypoints
             Waypoint = GetComponent<Waypoint>();
             foreach (var obj in GameObject.FindGameObjectsWithTag("Waypoint"))
             {
+                if (obj == gameObject)
+                    continue;
                 var targetWaypoint = obj.GetComponent<Waypoint>();
+                if (!targetWaypoint.Connection.Contains(this.Waypoint))
+                {
+                    targetWaypoint.Connection.Add(this.Waypoint);
+                    this.Waypoint.Connection.Add(targetWaypoint);
+                }
             }
         }
 

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Map
   - Ground
+  - Waypoint
   layers:
   - Default
   - TransparentFX

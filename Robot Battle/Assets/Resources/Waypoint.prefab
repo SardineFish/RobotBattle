@@ -22,9 +22,10 @@ GameObject:
   - component: {fileID: 33780179939300886}
   - component: {fileID: 23702075759356442}
   - component: {fileID: 114417243205555664}
+  - component: {fileID: 114909140977880924}
   m_Layer: 10
   m_Name: Waypoint
-  m_TagString: Untagged
+  m_TagString: Waypoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -92,3 +93,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64a0b9168cdd5e94c8c7b1e94937318e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Connection: []
+--- !u!114 &114909140977880924
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1587251439880446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d52d0bf95422a4d49bf5e722d5b1d457, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Waypoint: {fileID: 0}
