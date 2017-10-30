@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.AI.Messages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -41,6 +42,11 @@ namespace Assets.Scripts.AI
             var nextState = gameObject.AddComponent(stateType) as State;
             if (previouseType != null)
                 nextState.OnEnter(previouseType);
+        }
+
+        public virtual void OnMessage(Message message)
+        {
+
         }
 
         public static Entity Create(GameObject gameObject)

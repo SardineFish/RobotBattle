@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using Assets.Scripts.AI.Messages;
 
 namespace Assets.Scripts.AI
 {
@@ -14,6 +15,10 @@ namespace Assets.Scripts.AI
         public virtual void OnExit(Type nextState)
         {
             this.Disposed = true;
+        }
+
+        public virtual void OnMessage(Message message)
+        {
         }
 
     }
