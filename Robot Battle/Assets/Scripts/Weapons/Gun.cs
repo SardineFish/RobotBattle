@@ -53,6 +53,10 @@ namespace Assets.Scripts.Weapons
                     var message = new AttackMessage(new AttackMessage.AttackData(GetComponent<Player>(), player, Damage, shootRay.direction, ImpactForce));
                     message.Dispatch();
                 }
+                var hitAsh = Instantiate(Resources.Load("HitAsh") as GameObject);
+                hitAsh.transform.rotation = Quaternion.LookRotation(hit.normal);
+                hitAsh.transform.position = hit.point;
+                GameObject.Destroy(hitAsh, 0.5f);
             }
             return true;
         }

@@ -749,6 +749,7 @@ MonoBehaviour:
   - {fileID: 1735343749}
   - {fileID: 939861404}
   - {fileID: 495843410}
+  - {fileID: 1771876872}
 --- !u!135 &151458495
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3947,6 +3948,48 @@ Transform:
   m_Father: {fileID: 1060203831}
   m_RootOrder: 27
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &782442657
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4436680741068000, guid: 07c34382308e8bb4e93074ee8c623b42, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4436680741068000, guid: 07c34382308e8bb4e93074ee8c623b42, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 11.77
+      objectReference: {fileID: 0}
+    - target: {fileID: 4436680741068000, guid: 07c34382308e8bb4e93074ee8c623b42, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4436680741068000, guid: 07c34382308e8bb4e93074ee8c623b42, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4436680741068000, guid: 07c34382308e8bb4e93074ee8c623b42, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4436680741068000, guid: 07c34382308e8bb4e93074ee8c623b42, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4436680741068000, guid: 07c34382308e8bb4e93074ee8c623b42, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4436680741068000, guid: 07c34382308e8bb4e93074ee8c623b42, type: 2}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 07c34382308e8bb4e93074ee8c623b42, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &782894836
 GameObject:
   m_ObjectHideFlags: 0
@@ -4322,6 +4365,7 @@ MonoBehaviour:
   - {fileID: 1735343749}
   - {fileID: 939861404}
   - {fileID: 1771876872}
+  - {fileID: 1067499683}
 --- !u!135 &936083343
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -5147,6 +5191,7 @@ MonoBehaviour:
   - {fileID: 176448178}
   - {fileID: 1818534576}
   - {fileID: 1735343749}
+  - {fileID: 936083342}
 --- !u!135 &1067499684
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -6576,6 +6621,7 @@ MonoBehaviour:
   - {fileID: 63584458}
   - {fileID: 1735343749}
   - {fileID: 495843410}
+  - {fileID: 1771876872}
 --- !u!135 &1540973953
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -7360,6 +7406,9 @@ MonoBehaviour:
   - {fileID: 1735343749}
   - {fileID: 939861404}
   - {fileID: 936083342}
+  - {fileID: 1540973952}
+  - {fileID: 151458494}
+  - {fileID: 1960268920}
 --- !u!135 &1771876873
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -8304,6 +8353,7 @@ MonoBehaviour:
   - {fileID: 1030122028}
   - {fileID: 350098412}
   - {fileID: 151458494}
+  - {fileID: 1771876872}
 --- !u!135 &1960268921
 SphereCollider:
   m_ObjectHideFlags: 0
