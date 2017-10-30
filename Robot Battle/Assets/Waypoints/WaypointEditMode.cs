@@ -11,6 +11,7 @@ namespace Assets.Waypoints
     public class WaypointEditMode:MonoBehaviour
     {
         public Waypoint Waypoint;
+        public float MaxConnectDistance = 500;
         
         [ExecuteInEditMode]
         private void Start()
@@ -20,11 +21,20 @@ namespace Assets.Waypoints
             {
                 if (obj == gameObject)
                     continue;
-                var targetWaypoint = obj.GetComponent<Waypoint>();
-                if (!targetWaypoint.Connection.Contains(this.Waypoint))
+                var origin = transform.position + Vector3.up * 10;
+                var ray = new Ray(origin, obj.transform.position - origin);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit, MaxConnectDistance))
                 {
-                    targetWaypoint.Connection.Add(this.Waypoint);
-                    this.Waypoint.Connection.Add(targetWaypoint);
+                    if(hit .transform.gameObject == obj)
+                    {
+                        var targetWaypoint = obj.GetComponent<Waypoint>();
+                        if (!targetWaypoint.Connection.Contains(this.Waypoint))
+                        {
+                            targetWaypoint.Connection.Add(this.Waypoint);
+                            this.Waypoint.Connection.Add(targetWaypoint);
+                        }
+                    }
                 }
             }
         }
