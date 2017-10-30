@@ -165,7 +165,7 @@ public class Player : Assets.Scripts.AI.Entity
 
     public override void OnMessage(Message message)
     {
-        if(message is AttackMessage)
+        if (message is AttackMessage)
         {
             var attack = message.Data as AttackMessage.AttackData;
             if (attack != null)
@@ -177,8 +177,10 @@ public class Player : Assets.Scripts.AI.Entity
                     ChangeState(typeof(PlayerDeadState));
                 }
             }
+            message.Handled = true;
         }
-        base.OnMessage(message);
+        else
+            base.OnMessage(message);
     }
 
     public void VisualScan()
