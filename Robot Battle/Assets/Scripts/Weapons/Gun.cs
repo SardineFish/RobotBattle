@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.AI.Messages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -48,7 +49,9 @@ namespace Assets.Scripts.Weapons
                 if(hit.transform.gameObject.tag == "Player")
                 {
                     var player = hit.transform.gameObject.GetComponent<Player>();
-                    player.OnShotCallback(gameObject.GetComponent<Player>(), shootRay.direction, Damage, ImpactForce);
+                    //player.OnShotCallback(gameObject.GetComponent<Player>(), shootRay.direction, Damage, ImpactForce);
+                    var message = new AttackMessage(new AttackMessage.AttackData(GetComponent<Player>(), player, Damage, shootRay.direction, ImpactForce));
+                    message.Dispatch();
                 }
             }
             return true;

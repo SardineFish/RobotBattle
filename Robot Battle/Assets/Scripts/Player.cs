@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Assets.Scripts.AI;
 using Assets.Scripts.Weapons;
+using Assets.Scripts.AI.Messages;
 
 public class Player : Assets.Scripts.AI.Entity
 {
@@ -152,7 +153,7 @@ public class Player : Assets.Scripts.AI.Entity
         }
     }
 
-    public void OnShotCallback(Player shooter, Vector3 direction, float Damage, float impactForce)
+    /*public void OnShotCallback(Player shooter, Vector3 direction, float Damage, float impactForce)
     {
         this.HP -= Damage;
         rigidbody.AddForce(direction.normalized * impactForce, ForceMode.Impulse);
@@ -160,6 +161,24 @@ public class Player : Assets.Scripts.AI.Entity
         {
             ChangeState(typeof(PlayerDeadState));
         }
+    }*/
+
+    public override void OnMessage(Message message)
+    {
+        if(message is AttackMessage)
+        {
+            var attack = message.Data as AttackMessage.AttackData;
+            if (attack != null)
+            {
+                this.HP -= attack.Damage;
+                rigidbody.AddForce(attack.Direction.normalized * attack.ImpactForce, ForceMode.Impulse);
+                if (this.HP < 0)
+                {
+                    ChangeState(typeof(PlayerDeadState));
+                }
+            }
+        }
+        base.OnMessage(message);
     }
 
     public void VisualScan()
