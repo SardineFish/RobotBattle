@@ -8,10 +8,12 @@ public class Waypoint : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+        GetComponent<Collider>().enabled = false;
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	}
+	void Update ()
+    {
+        GetComponent<Collider>().enabled = false;
+    }
 }

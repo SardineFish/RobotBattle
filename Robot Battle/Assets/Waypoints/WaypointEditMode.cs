@@ -16,11 +16,14 @@ namespace Assets.Waypoints
         [ExecuteInEditMode]
         private void Start()
         {
+            if (!Application.isEditor)
+                return;
             Waypoint = GetComponent<Waypoint>();
             foreach (var obj in GameObject.FindGameObjectsWithTag("Waypoint"))
             {
                 if (obj == gameObject)
                     continue;
+                obj.GetComponent<Collider>().enabled = true;
                 var origin = transform.position + Vector3.up * 10;
                 var ray = new Ray(origin, obj.transform.position - origin);
                 RaycastHit hit;
@@ -42,7 +45,7 @@ namespace Assets.Waypoints
         [ExecuteInEditMode]
         private void Update()
         {
-            Debug.DrawLine(transform.position, transform.position + transform.up * 10, Color.blue);
+            Debug.DrawLine(transform.position, transform.position + transform.up * 10, Color.yellow);
             foreach (var waypoint in Waypoint.Connection)
             {
                 Debug.DrawLine(transform.position, waypoint.transform.position, Color.blue);

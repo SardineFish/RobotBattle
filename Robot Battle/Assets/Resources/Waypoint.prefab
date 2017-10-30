@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 23702075759356442}
   - component: {fileID: 114417243205555664}
   - component: {fileID: 114909140977880924}
+  - component: {fileID: 135168604379185388}
   m_Layer: 10
   m_Name: Waypoint
   m_TagString: Waypoint
@@ -106,3 +107,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Waypoint: {fileID: 0}
+  MaxConnectDistance: 500
+--- !u!135 &135168604379185388
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1587251439880446}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
