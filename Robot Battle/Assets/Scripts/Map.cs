@@ -9,6 +9,7 @@ namespace Assets.Scripts
     public class Map : MonoBehaviour
     {
         public List<Waypoint> Waypoints = new List<Waypoint>();
+        public float ExtandDistance = 10;
         public void AddWaypoint(Waypoint waypoint)
         {
             if (!Waypoints.Contains(waypoint))
@@ -28,6 +29,18 @@ namespace Assets.Scripts
                 Waypoints.Remove(waypoint);
                 GameObject.Destroy(waypoint);
             }
+        }
+        public void ClearWaypoints()
+        {
+            foreach (var waypoint in Waypoints)
+            {
+                GameObject.Destroy(waypoint);
+            }
+            Waypoints.Clear();
+        }
+        public void ExtandWaypoints()
+        {
+
         }
     }
 }

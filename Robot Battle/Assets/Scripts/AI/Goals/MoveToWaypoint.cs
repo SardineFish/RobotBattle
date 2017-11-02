@@ -25,7 +25,7 @@ namespace Assets.Scripts.AI.Goals
 
         public override void Update(float dt)
         {
-            if((Player.transform.position - Waypoint.transform.position ).magnitude < 0.1)
+            if((Player.transform.position - Waypoint.transform.position ).magnitude < 1)
             {
                 if(Achieved != null)
                 {

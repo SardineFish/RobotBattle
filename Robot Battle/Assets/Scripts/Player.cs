@@ -41,10 +41,10 @@ public class Player : Assets.Scripts.AI.Entity
     public float Defence = 0;
 
     public List<PositionMemory> PositionMemories = new List<PositionMemory>();
+    public GoalsManager GoalsManager;
     new Rigidbody rigidbody;
     BoxCollider footCollider;
     CapsuleCollider bodyCollider;
-    GoalsManager GoalsManager;
 
     float lastShootTime = 0;
 
@@ -61,6 +61,7 @@ public class Player : Assets.Scripts.AI.Entity
     void Update()
     {
         Move(MoveDirection);
+        MoveDirection = Vector3.zero;
         var v = (Vector3.Scale(rigidbody.velocity, new Vector3(1, 0, 1)));
         this.Velocity = rigidbody.velocity;
 

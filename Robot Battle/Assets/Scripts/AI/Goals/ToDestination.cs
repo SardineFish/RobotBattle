@@ -23,7 +23,7 @@ namespace Assets.Scripts.AI.Goals
             Waypoint nearestWaypoint = null;
             foreach (var waypoint in GameObject.Find("Map").GetComponent<Map>().Waypoints)
             {
-                var distance = (waypoint.transform.position - player.transform.position).magnitude;
+                var distance = (waypoint.transform.position - position).magnitude;
                 if (distance < minDst)
                 {
                     minDst = distance;

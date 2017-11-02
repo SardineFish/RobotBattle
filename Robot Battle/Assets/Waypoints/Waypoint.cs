@@ -57,11 +57,12 @@ public class Waypoint : MonoBehaviour {
 
     public bool ReachStraight(Player player, float maxDistance = 1000)
     {
-        var ray = new Ray(transform.position + Vector3.up * 10, player.transform.position - transform.position + Vector3.up * 10);
+        var playerHands = player.transform.Find("Wrap/Hands").gameObject;
+        var ray = new Ray(transform.position + Vector3.up * 10, playerHands.transform.position - (transform.position + Vector3.up * 10));
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, maxDistance))
+        if (Physics.Raycast(ray, out hit, 1000))
         {
-            if (hit.transform.gameObject == player.gameObject)
+            if (hit.transform.gameObject == player.gameObject || hit.transform.gameObject== playerHands.gameObject)
             {
                 return true;
             }
