@@ -4,6 +4,7 @@ using UnityEngine;
 using Assets.Scripts.AI;
 using Assets.Scripts.Weapons;
 using Assets.Scripts.AI.Messages;
+using Assets.Scripts.AI.Goals;
 
 public class Player : Assets.Scripts.AI.Entity
 {
@@ -28,7 +29,7 @@ public class Player : Assets.Scripts.AI.Entity
     {
         get
         {
-            return MoveDirection;
+            return moveDirection;
         }
         set
         {
@@ -43,6 +44,7 @@ public class Player : Assets.Scripts.AI.Entity
     new Rigidbody rigidbody;
     BoxCollider footCollider;
     CapsuleCollider bodyCollider;
+    GoalsManager GoalsManager;
 
     float lastShootTime = 0;
 
@@ -52,6 +54,7 @@ public class Player : Assets.Scripts.AI.Entity
         rigidbody = GetComponent<Rigidbody>();
         footCollider = GetComponent<BoxCollider>();
         bodyCollider = GetComponent<CapsuleCollider>();
+        GoalsManager = GetComponent<GoalsManager>();
     }
 
     // Update is called once per frame

@@ -19,13 +19,26 @@ namespace Assets.Scripts.AI.Goals
         }
         public ToDestination(Player player, Vector3 position) : base(player)
         {
+            var minDst = float.MaxValue;
+            Waypoint nearestWaypoint = null;
             foreach (var waypoint in GameObject.Find("Map").GetComponent<Map>().Waypoints)
             {
-
+                var distance = (waypoint.transform.position - player.transform.position).magnitude;
+                if (distance < minDst)
+                {
+                    minDst = distance;
+                    nearestWaypoint = waypoint;
+                }
             }
+            this.Destination = nearestWaypoint;
         }
         public override void OnActive()
         {
+            if(this.Destination == null)
+            {
+                if (Error != null)
+                    Error.Invoke(Player, this);
+            }
             var map = GameObject.Find("Map").GetComponent<Map>();
             var minDst = float.MaxValue;
             Waypoint nearestWaypoint = null;
