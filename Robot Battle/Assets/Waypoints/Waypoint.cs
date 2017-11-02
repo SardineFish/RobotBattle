@@ -54,4 +54,32 @@ public class Waypoint : MonoBehaviour {
         path.Insert(0, this);
         return path;
     }
+
+    public bool ReachStraight(Player player, float maxDistance = 1000)
+    {
+        var ray = new Ray(transform.position + Vector3.up * 10, player.transform.position - transform.position + Vector3.up * 10);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, maxDistance))
+        {
+            if (hit.transform.gameObject == player.gameObject)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool ReachStraight(Waypoint waypoint, float maxDistance = 1000)
+    {
+        var ray = new Ray(transform.position + Vector3.up * 10, waypoint.transform.position - transform.position + Vector3.up * 10);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, maxDistance))
+        {
+            if (hit.transform.gameObject == waypoint.gameObject)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

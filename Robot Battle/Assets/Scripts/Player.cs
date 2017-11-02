@@ -23,6 +23,7 @@ public class Player : Assets.Scripts.AI.Entity
     public float ShootImpact = 1;
     public float MaxTurnSpeed = 180;
     public Ray Looking;
+    public Vector3 MoveDirection = Vector3.zero;
 
     public float HP = 100;
     public float Defence = 0;
@@ -45,6 +46,7 @@ public class Player : Assets.Scripts.AI.Entity
     // Update is called once per frame
     void Update()
     {
+        Move(MoveDirection);
         var v = (Vector3.Scale(rigidbody.velocity, new Vector3(1, 0, 1)));
         this.Velocity = rigidbody.velocity;
 
@@ -83,7 +85,7 @@ public class Player : Assets.Scripts.AI.Entity
         OnGround = false;
     }
 
-    public void Move(Vector3 direction)
+    private void Move(Vector3 direction)
     {
         direction = Vector3.Scale(direction, new Vector3(1, 0, 1));
         rigidbody.AddForce(direction * MoveForce, ForceMode.Impulse);

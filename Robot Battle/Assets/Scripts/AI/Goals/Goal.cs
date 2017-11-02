@@ -10,19 +10,16 @@ namespace Assets.Scripts.AI.Goals
     public class Goal
     {
         public float Interval;
-        Queue<Goal> subGoals = new Queue<Goal>();
-        public Goal[] SubGoals
+
+        public List<Goal> subGoals = new List<Goal>();
+        public List<Goal> SubGoals
         {
-            get { return subGoals.ToArray(); }
-        }
-        public Goal ActiveSubGoal
-        {
-            get { return subGoals.Peek(); }
+            get { return subGoals; }
+            private set { subGoals = value; }
         }
 
-        public List<Behavior> Behaviors = new List<Behavior>();
 
-        public List<Goal> ParallelGoals = new List<Goal>();
+        public Player Player { get; private set; }
 
         public delegate void GoalAchieveEventHandler(Player player, Goal goal);
 
@@ -33,6 +30,11 @@ namespace Assets.Scripts.AI.Goals
 
         float lastUpdate = 0;
 
+        public Goal(Player player)
+        {
+            Player = player;
+        }
+
         private void Update()
         {
             if (!Active)
@@ -40,10 +42,9 @@ namespace Assets.Scripts.AI.Goals
                 Active = true;
                 OnActive();
             }
-            subGoals.Peek().TryUpdate();
-            foreach (var behavior in Behaviors)
+            foreach (var goal in subGoals)
             {
-                behavior.TryUpdate();
+                goal.TryUpdate();
             }
         }
 
@@ -78,14 +79,7 @@ namespace Assets.Scripts.AI.Goals
 
         public virtual void AddSubGoal(Goal goal)
         {
-            goal.Achieved += SubGoal_Achieved;
-        }
-
-        private void SubGoal_Achieved(Player player, Goal goal)
-        {
-            var subGoal = subGoals.Dequeue();
-            subGoal.Active = false;
-            subGoal.OnEnd();
+            SubGoals.Add(goal);
         }
     }
 }
