@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Assets.Editor
 {
-    [CustomEditor(typeof(DrawWaypoint))]
+    [CustomEditor(typeof(GlobalWaypoints))]
     public class WayPointEditor: UnityEditor.Editor
     {
         [ExecuteInEditMode]
@@ -17,7 +17,7 @@ namespace Assets.Editor
         {
             if (Event.current.type == EventType.MouseDown && Event.current.button ==0)
             {
-                var drawWaypoint = target as DrawWaypoint;
+                var drawWaypoint = target as GlobalWaypoints;
                 if (drawWaypoint.DrawingMode)
                 {
                     var ray = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
@@ -25,9 +25,12 @@ namespace Assets.Editor
                     if (Physics.Raycast(ray, out hit, 1000))
                     {
                         Debug.DrawLine(hit.point, hit.point + new Vector3(0, 20, 0), Color.green);
+                        drawWaypoint.AddWaypoint(hit.point);
+                        /*
                         var waypoint = GameObject.Instantiate(Resources.Load("Waypoint") as GameObject, GameObject.Find("Waypoints").transform);
                         waypoint.name = "Waypoint";
                         waypoint.transform.position = hit.point;
+                        */
                     }
                 }
             }

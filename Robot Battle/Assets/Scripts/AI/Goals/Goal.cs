@@ -22,9 +22,12 @@ namespace Assets.Scripts.AI.Goals
 
         public List<Behavior> Behaviors = new List<Behavior>();
 
+        public List<Goal> ParallelGoals = new List<Goal>();
+
         public delegate void GoalAchieveEventHandler(Player player, Goal goal);
 
         public event GoalAchieveEventHandler Achieved;
+
 
         public bool Active = false;
 

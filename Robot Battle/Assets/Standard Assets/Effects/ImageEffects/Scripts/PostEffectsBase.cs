@@ -80,10 +80,11 @@ namespace UnityStandardAssets.ImageEffects
             {
                 Material mat = createdMaterials[0];
                 createdMaterials.RemoveAt (0);
+                DestroyImmediate(mat);
 #if UNITY_EDITOR
-                DestroyImmediate (mat);
+                //DestroyImmediate (mat);
 #else
-                Destroy(mat);
+                //Destroy(mat);
 #endif
             }
         }
