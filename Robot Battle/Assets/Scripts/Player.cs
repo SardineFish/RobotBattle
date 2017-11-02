@@ -23,7 +23,18 @@ public class Player : Assets.Scripts.AI.Entity
     public float ShootImpact = 1;
     public float MaxTurnSpeed = 180;
     public Ray Looking;
-    public Vector3 MoveDirection = Vector3.zero;
+    private Vector3 moveDirection = Vector3.zero;
+    public Vector3 MoveDirection
+    {
+        get
+        {
+            return MoveDirection;
+        }
+        set
+        {
+            moveDirection = value.normalized;
+        }
+    }
 
     public float HP = 100;
     public float Defence = 0;
@@ -89,6 +100,11 @@ public class Player : Assets.Scripts.AI.Entity
     {
         direction = Vector3.Scale(direction, new Vector3(1, 0, 1));
         rigidbody.AddForce(direction * MoveForce, ForceMode.Impulse);
+    }
+
+    public void AddMoveBehavior(Vector3 direction, float weight = 1)
+    {
+        MoveDirection = MoveDirection + direction.normalized * weight;
     }
 
     public bool MoveTo(Vector3 target)

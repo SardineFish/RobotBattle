@@ -21,9 +21,11 @@ namespace Assets.Scripts.AI.Goals
 
         public Player Player { get; private set; }
 
-        public delegate void GoalAchieveEventHandler(Player player, Goal goal);
+        public delegate void GoalEventHandler(Player player, Goal goal);
 
-        public event GoalAchieveEventHandler Achieved;
+        public virtual event GoalEventHandler Achieved;
+
+        public virtual event GoalEventHandler Error;
 
 
         public bool Active = false;

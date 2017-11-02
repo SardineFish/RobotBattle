@@ -3,16 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
-using UnityEditor;
 
-namespace Assets.Waypoints
+namespace Assets.Scripts
 {
-
-    [ExecuteInEditMode]
-    public class GlobalWaypoints: MonoBehaviour
+    public class Map : MonoBehaviour
     {
         public List<Waypoint> Waypoints = new List<Waypoint>();
-        public bool DrawingMode = false;
         public void AddWaypoint(Waypoint waypoint)
         {
             if (!Waypoints.Contains(waypoint))

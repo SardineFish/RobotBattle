@@ -21,9 +21,19 @@ namespace Assets.Scripts.AI.Goals
             base.OnActive();
         }
 
+        public override event GoalEventHandler Achieved;
+
         public override void Update(float dt)
         {
-            
+            if((Player.transform.position - Waypoint.transform.position ).magnitude < 0.1)
+            {
+                if(Achieved != null)
+                {
+                    Achieved.Invoke(Player, this);
+                }
+                return;
+            }
+            Player.AddMoveBehavior(Waypoint.transform.position - Player.transform.position);
             base.Update(dt);
         }
 

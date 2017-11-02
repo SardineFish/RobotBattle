@@ -11,16 +11,25 @@ namespace Assets.Scripts.AI.Goals
     {
         public Waypoint Destination { get; set; }
         public List<Waypoint> Path;
+        public override event GoalEventHandler Error;
+        public override event GoalEventHandler Achieved;
         public ToDestination(Player player, Waypoint dst) : base(player)
         {
             this.Destination = dst;
         }
+        public ToDestination(Player player, Vector3 position) : base(player)
+        {
+            foreach (var waypoint in GameObject.Find("Map").GetComponent<Map>().Waypoints)
+            {
+
+            }
+        }
         public override void OnActive()
         {
-            var globalWaypoint = GameObject.Find("Ground").GetComponent<GlobalWaypoints>();
+            var map = GameObject.Find("Map").GetComponent<Map>();
             var minDst = float.MaxValue;
             Waypoint nearestWaypoint = null;
-            foreach (var waypoint in globalWaypoint.Waypoints)
+            foreach (var waypoint in map.Waypoints)
             {
                 var distance = (waypoint.transform.position - Player.transform.position).magnitude;
                 if (distance < minDst && waypoint.ReachStraight(Player,distance +100))
@@ -30,7 +39,31 @@ namespace Assets.Scripts.AI.Goals
                 }
             }
             this.Path = nearestWaypoint.SearchPath(Destination);
+            if (this.Path == null)
+            {
+                if (Error != null)
+                    Error.Invoke(Player, this);
+                return;
+            }
+            var moveGoal = new MoveToWaypoint(Player, Path[0]);
+            moveGoal.Achieved += MoveGoal_Achieved;
+            this.AddSubGoal(moveGoal);
             base.OnActive();
+        }
+
+        private void MoveGoal_Achieved(Player player, Goal goal)
+        {
+            this.SubGoals.Remove(goal);
+            Path.RemoveAt(0);
+            if (Path.Count <= 0)
+            {
+                if (Achieved != null)
+                    Achieved.Invoke(Player, this);
+                return;
+            }
+            var moveGoal = new MoveToWaypoint(Player, Path[0]);
+            moveGoal.Achieved += MoveGoal_Achieved;
+            this.AddSubGoal(moveGoal);
         }
     }
 }

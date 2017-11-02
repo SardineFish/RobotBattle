@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Assets.Editor
 {
-    [CustomEditor(typeof(GlobalWaypoints))]
+    [CustomEditor(typeof(DrawWaypoints))]
     public class WayPointEditor: UnityEditor.Editor
     {
         [ExecuteInEditMode]
@@ -17,7 +17,7 @@ namespace Assets.Editor
         {
             if (Event.current.type == EventType.MouseDown && Event.current.button ==0)
             {
-                var drawWaypoint = target as GlobalWaypoints;
+                var drawWaypoint = target as DrawWaypoints;
                 if (drawWaypoint.DrawingMode)
                 {
                     var ray = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
