@@ -12,5 +12,6 @@ namespace Assets.Waypoints
     public class DrawWaypoints: MonoBehaviour
     {
         public bool DrawingMode = false;
+        public GameObject Map;
     }
 }

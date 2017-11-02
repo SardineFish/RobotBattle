@@ -25,7 +25,7 @@ namespace Assets.Editor
                     if (Physics.Raycast(ray, out hit, 1000))
                     {
                         Debug.DrawLine(hit.point, hit.point + new Vector3(0, 20, 0), Color.green);
-                        drawWaypoint.AddWaypoint(hit.point);
+                        drawWaypoint.Map.GetComponent<Map>().AddWaypoint(hit.point);
                         /*
                         var waypoint = GameObject.Instantiate(Resources.Load("Waypoint") as GameObject, GameObject.Find("Waypoints").transform);
                         waypoint.name = "Waypoint";
