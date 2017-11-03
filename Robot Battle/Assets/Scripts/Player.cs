@@ -23,8 +23,10 @@ public class Player : Assets.Scripts.AI.Entity
     public float VisualRange = 90;
     public float ShootImpact = 1;
     public float MaxTurnSpeed = 180;
+    public float BodyRadius = 5;
     public Ray Looking;
     private Vector3 moveDirection = Vector3.zero;
+    [SerializeField]
     public Vector3 MoveDirection
     {
         get
@@ -173,6 +175,29 @@ public class Player : Assets.Scripts.AI.Entity
             gunL.Rotate(0, 0, turnL);
             gunR.Rotate(0, 0, -turnR);
         }
+    }
+
+    public bool CanGoStraight(Vector3 position)
+    {
+        var distance = (position - transform.position).magnitude;
+        var ang = Mathf.Acos(BodyRadius / distance) / Mathf.PI * 180;
+        var ray = new Ray(transform.Find("Wrap/Hands").position, position - transform.position);
+        var rayL = ray;
+        var rayR = ray;
+        rayL.origin += (Quaternion.AngleAxis(ang, Vector3.up) * rayL.direction) * BodyRadius;
+        rayR.origin += (Quaternion.AngleAxis(-ang, Vector3.up) * rayR.direction) * BodyRadius;
+        /*
+        rayL.direction = Quaternion.AngleAxis(ang, Vector3.up) * rayL.direction;
+        rayR.direction = Quaternion.AngleAxis(-ang, Vector3.up) * rayR.direction;
+        */
+        Debug.DrawLine(rayL.origin, rayL.origin + rayL.direction * distance, Color.cyan);
+        Debug.DrawLine(rayR.origin, rayR.origin + rayR.direction * distance, Color.cyan);
+        Debug.DrawLine(ray.origin, ray.origin + ray.direction * distance, Color.cyan);
+        if (!Physics.Raycast(rayL, distance, 1 << 11) && !Physics.Raycast(rayR, distance, 1 << 11) && !Physics.Raycast(ray, distance, 1 << 11))
+        {
+            return true;
+        }
+        return false;
     }
 
     /*public void OnShotCallback(Player shooter, Vector3 direction, float Damage, float impactForce)

@@ -16,5 +16,19 @@ namespace Assets.Scripts.AI.Goals
                 goal.TryUpdate();
             }
         }
+
+        public void AddGoal(Goal goal)
+        {
+            if(!Goals.Contains(goal))
+            {
+                goal.Achieved += Goal_Achieved;
+                Goals.Add(goal);
+            }
+        }
+
+        private void Goal_Achieved(Player player, Goal goal)
+        {
+            Goals.Remove(goal);
+        }
     }
 }

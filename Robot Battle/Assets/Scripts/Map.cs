@@ -40,7 +40,10 @@ namespace Assets.Scripts
         }
         public void ExtandWaypoints()
         {
-
+            for(var i = 0; i < Waypoints.Count; i++)
+            {
+                
+            }
         }
     }
 }

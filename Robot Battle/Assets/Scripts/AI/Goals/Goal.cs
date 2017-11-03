@@ -39,11 +39,6 @@ namespace Assets.Scripts.AI.Goals
 
         private void Update()
         {
-            if (!Active)
-            {
-                Active = true;
-                OnActive();
-            }
             foreach (var goal in subGoals)
             {
                 goal.TryUpdate();
@@ -57,6 +52,11 @@ namespace Assets.Scripts.AI.Goals
 
         public virtual bool TryUpdate()
         {
+            if (!Active)
+            {
+                Active = true;
+                OnActive();
+            }
             if (Time.time - lastUpdate < Interval)
             {
                 Update();

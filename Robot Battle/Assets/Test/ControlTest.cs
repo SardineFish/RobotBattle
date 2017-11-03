@@ -25,7 +25,7 @@ namespace Assets.Test
             {
                 var ray = Camera.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
-                if (Physics.Raycast(ray, out hit, 1000, 1 << 9))
+                if (Physics.Raycast(ray, out hit, 5000, 1 << 9))
                 {
                     Player.GoalsManager.Goals.Add(new ToDestination(Player, hit.point));
                 }

@@ -6,13 +6,13 @@ using UnityEngine;
 
 namespace Assets.Scripts.AI.Goals
 {
-    public class MoveToWaypoint : Goal
+    public class MoveTo : Goal
     {
-        public Waypoint Waypoint { get; set; }
+        public Vector3 Destination { get; set; }
         public Vector3 StartPosition { get; set; }
-        public MoveToWaypoint(Player player, Waypoint next) : base(player)
+        public MoveTo(Player player, Vector3 dst) : base(player)
         {
-            Waypoint = next;
+            Destination = dst;
         }
 
         public override void OnActive()
@@ -25,7 +25,7 @@ namespace Assets.Scripts.AI.Goals
 
         public override void Update(float dt)
         {
-            if((Player.transform.position - Waypoint.transform.position ).magnitude < 1)
+            if((Player.transform.position - Destination ).magnitude < 1)
             {
                 if(Achieved != null)
                 {
@@ -33,7 +33,8 @@ namespace Assets.Scripts.AI.Goals
                 }
                 return;
             }
-            Player.AddMoveBehavior(Waypoint.transform.position - Player.transform.position);
+            Player.LookAt(Destination - Player.transform.position);
+            Player.AddMoveBehavior(Destination - Player.transform.position);
             base.Update(dt);
         }
 
