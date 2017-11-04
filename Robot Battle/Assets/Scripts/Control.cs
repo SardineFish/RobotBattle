@@ -53,7 +53,7 @@ public class Control : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.Mouse0))
         {
-            player.Shoot();
+            player.Fire();
         }
 
         #region FollowCamera

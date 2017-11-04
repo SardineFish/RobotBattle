@@ -20,9 +20,9 @@ namespace Assets.Editor
             {
                 map.ClearWaypoints();
             }
-            if (GUILayout.Button("ExtandWaypoints"))
+            if (GUILayout.Button("ExtendWaypoints"))
             {
-                map.ExtandWaypoints();
+                map.ExtandWaypoints(map.MaxExtend);
             }
         }
     }

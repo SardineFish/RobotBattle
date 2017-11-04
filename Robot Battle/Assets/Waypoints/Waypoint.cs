@@ -18,6 +18,16 @@ public class Waypoint : MonoBehaviour {
         GetComponent<Collider>().enabled = false;
     }
 
+    public void AddConnection(Waypoint waypoint)
+    {
+        if (waypoint == null)
+            return;
+        if (!Connection.Contains(waypoint))
+            Connection.Add(waypoint);
+        if (!waypoint.Connection.Contains(this))
+            waypoint.Connection.Add(this);
+    }
+
     public List<Waypoint> SearchPath(Waypoint dst)
     {
         SortedList<float, Edge> visit = new SortedList<float, Edge>();
@@ -72,15 +82,19 @@ public class Waypoint : MonoBehaviour {
 
     public bool ReachStraight(Waypoint waypoint, float maxDistance = 1000)
     {
+        var dst = (transform.position + Vector3.up * 10 - waypoint.transform.position).magnitude;
+        dst = Mathf.Min(maxDistance, dst);
         var ray = new Ray(transform.position + Vector3.up * 10, waypoint.transform.position - transform.position + Vector3.up * 10);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, maxDistance))
+        if (Physics.Raycast(ray, out hit, dst, 1<<11))
         {
+            return false;
+
             if (hit.transform.gameObject == waypoint.gameObject)
             {
                 return true;
             }
         }
-        return false;
+        return true;
     }
 }

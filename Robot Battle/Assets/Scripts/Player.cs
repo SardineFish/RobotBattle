@@ -42,7 +42,7 @@ public class Player : Assets.Scripts.AI.Entity
     public float HP = 100;
     public float Defence = 0;
 
-    public List<PositionMemory> PositionMemories = new List<PositionMemory>();
+    public PositionMemoryManager Memory = new PositionMemoryManager();
     public GoalsManager GoalsManager;
     new Rigidbody rigidbody;
     BoxCollider footCollider;
@@ -134,7 +134,7 @@ public class Player : Assets.Scripts.AI.Entity
         }
     }
 
-    public void Shoot()
+    public void Fire()
     {
         var gun = GetComponent<Gun>();
         if (gun != null)
@@ -230,11 +230,33 @@ public class Player : Assets.Scripts.AI.Entity
             base.OnMessage(message);
     }
 
+    public bool CanSee(Player player)
+    {
+        var self = transform.Find("Wrap/Hands");
+        var target = player.transform.Find("Wrap/Hands");
+        var ray = new Ray(self.position, target.position - self.position);
+        if (Vector3.Dot(Looking.direction, ray.direction) < Mathf.Cos(Mathf.PI * (VisualRange / 180)))
+            return false;
+        RaycastHit hit;
+        if(Physics.Raycast(ray,out hit, VisualDistance))
+        {
+            if(hit.transform.gameObject == player.gameObject || hit.transform == target)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void VisualScan()
     {
         foreach(var obj in GameObject.FindGameObjectsWithTag("Player"))
         {
-
+            var player = obj.GetComponent<Player>();
+            if (CanSee(player))
+            {
+                Memory.UpdateMemory(player, player.transform.position);
+            }
         }
     }
 
