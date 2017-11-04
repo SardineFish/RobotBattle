@@ -30,12 +30,12 @@ public class Waypoint : MonoBehaviour {
 
     public List<Waypoint> SearchPath(Waypoint dst)
     {
-        SortedList<float, Edge> visit = new SortedList<float, Edge>();
+        PriorityQueue<float, Edge> visit = new PriorityQueue<float, Edge>();
         Dictionary<Waypoint, Waypoint> FatherWaypoint = new Dictionary<Waypoint, Waypoint>();
         foreach(var next in this.Connection)
         {
             var edge = new Edge(this, next);
-            visit.Add(edge.Distance, edge);
+            visit.Add(edge.Distance + (next.transform.position - dst.transform.position).magnitude, edge);
         }
         while (true)
         {
@@ -53,7 +53,7 @@ public class Waypoint : MonoBehaviour {
             foreach (var next in waypoint.Connection)
             {
                 var edge = new Edge(waypoint, next);
-                visit.Add(distanceToStart + edge.Distance, edge);
+                visit.Add(distanceToStart + edge.Distance + (next.transform.position - dst.transform.position).magnitude, edge);
             }
         }
         List<Waypoint> path = new List<Waypoint>();

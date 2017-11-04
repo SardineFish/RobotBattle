@@ -21,9 +21,9 @@ GameObject:
   - component: {fileID: 4344509267597812}
   - component: {fileID: 33844739584215774}
   - component: {fileID: 23307976325025166}
-  - component: {fileID: 114520093732919108}
   - component: {fileID: 135713489869626096}
   - component: {fileID: 114567967597660522}
+  - component: {fileID: 114780768108587850}
   m_Layer: 10
   m_Name: SubWaypoint
   m_TagString: Waypoint
@@ -83,18 +83,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1331305241198030}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &114520093732919108
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1331305241198030}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64a0b9168cdd5e94c8c7b1e94937318e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Connection: []
 --- !u!114 &114567967597660522
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -108,6 +96,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Waypoint: {fileID: 0}
   MaxConnectDistance: 500
+--- !u!114 &114780768108587850
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1331305241198030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 324cf50c467e656409c29f6447e5cdf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Connection: []
 --- !u!135 &135713489869626096
 SphereCollider:
   m_ObjectHideFlags: 1

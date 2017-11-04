@@ -69,7 +69,7 @@ namespace Assets.Scripts.AI.Goals
 
         public override void Update(float dt)
         {
-            if (Path.Count > 0)
+            if (Path != null && Path.Count > 0)
                 CheckStraight();
             base.Update(dt);
         }

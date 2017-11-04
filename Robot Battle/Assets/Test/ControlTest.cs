@@ -27,6 +27,7 @@ namespace Assets.Test
                 RaycastHit hit;
                 if (Physics.Raycast(ray, out hit, 5000, 1 << 9))
                 {
+                    Player.GoalsManager.Goals.Clear();
                     Player.GoalsManager.Goals.Add(new ToDestination(Player, hit.point));
                 }
             }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.AI.Goals;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -50,6 +51,13 @@ public class Control : MonoBehaviour {
                 rigidbody.AddForce(-v.normalized * Vector3.Dot(moveDirection, -v.normalized) * player.ForceFly, ForceMode.Impulse);
         }
         #endregion
+
+        var assistant = GameObject.Find("Robot-Assistant").GetComponent<Player>();
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            assistant.GoalsManager.Goals.Clear();
+            assistant.GoalsManager.AddGoal(new Follow(assistant, player, 40)); 
+        }
 
         if (Input.GetKey(KeyCode.Mouse0))
         {

@@ -48,11 +48,9 @@ namespace Assets.Scripts
         {
             foreach (var subWaypoint in SubWaypoints)
             {
-                if (Waypoints.Contains(subWaypoint))
-                    continue;
                 if (Application.isEditor)
                     DestroyImmediate(subWaypoint.gameObject);
-
+                Waypoints.Remove(subWaypoint);
             }
             SubWaypoints.Clear();
         }
@@ -91,6 +89,8 @@ namespace Assets.Scripts
                     }
                 }
             }
+            SubWaypoints.RemoveAt(0);
+            Waypoints.AddRange(SubWaypoints);
         }
     }
 }

@@ -190,8 +190,8 @@ public class Player : Assets.Scripts.AI.Entity
         rayL.direction = Quaternion.AngleAxis(ang, Vector3.up) * rayL.direction;
         rayR.direction = Quaternion.AngleAxis(-ang, Vector3.up) * rayR.direction;
         */
-        Debug.DrawLine(rayL.origin, rayL.origin + rayL.direction * distance, Color.cyan);
-        Debug.DrawLine(rayR.origin, rayR.origin + rayR.direction * distance, Color.cyan);
+        //Debug.DrawLine(rayL.origin, rayL.origin + rayL.direction * distance, Color.cyan);
+        //Debug.DrawLine(rayR.origin, rayR.origin + rayR.direction * distance, Color.cyan);
         Debug.DrawLine(ray.origin, ray.origin + ray.direction * distance, Color.cyan);
         if (!Physics.Raycast(rayL, distance, 1 << 11) && !Physics.Raycast(rayR, distance, 1 << 11) && !Physics.Raycast(ray, distance, 1 << 11))
         {
