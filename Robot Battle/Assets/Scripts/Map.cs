@@ -9,8 +9,8 @@ namespace Assets.Scripts
     [ExecuteInEditMode]
     public class Map : MonoBehaviour
     {
-        public List<Waypoint> Waypoints = new List<Waypoint>();
-        public List<Waypoint> SubWaypoints = new List<Waypoint>();
+        public static List<Waypoint> Waypoints = new List<Waypoint>();
+        public static List<Waypoint> SubWaypoints = new List<Waypoint>();
         public float ExtendDistance = 10;
         public int MaxExtend = 100;
         public void AddWaypoint(Waypoint waypoint)

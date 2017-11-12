@@ -248,6 +248,19 @@ public class Player : Assets.Scripts.AI.Entity
         return false;
     }
 
+    public bool CanSee(Vector3 position)
+    {
+        if (!CanGoStraight(position))
+        {
+            return false;
+        }
+        if (Vector3.Dot(Looking.direction, (position - Looking.origin).normalized) <= Mathf.Cos(Mathf.PI * (VisualRange / 100)))
+        {
+            return true;
+        }
+        return false;
+    }
+
     public void VisualScan()
     {
         foreach(var obj in GameObject.FindGameObjectsWithTag("Player"))
