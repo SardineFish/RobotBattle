@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Assets.Scripts.AI.Goals
 {
@@ -47,7 +48,7 @@ namespace Assets.Scripts.AI.Goals
             base.OnActive();
             if (ExploredWaypoints.Count <= 0)
             {
-                foreach (var waypoint in Map.Waypoints)
+                foreach (var waypoint in GameObject.Find("Map").GetComponent<Map>().Waypoints)
                 {
                     if (Player.CanGoStraight(waypoint.transform.position))
                     {

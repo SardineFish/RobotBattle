@@ -12,12 +12,13 @@ namespace Assets.Scripts.AI.Behaviors
 
         public void AddBehavior<BehaviorT>(BehaviorT behavior) where BehaviorT: Behavior
         {
+            throw new NotImplementedException();
             if (!BehaviorGroups.ContainsKey(behavior.GetType()))
-            {
+            {/*
                 BehaviorGroups.Add(
                     behavior.GetType(),
                     new BehaviorGroup<BehaviorT> ()
-                    );
+                    );*/
 
             }
         }
