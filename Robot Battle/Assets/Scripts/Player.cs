@@ -192,9 +192,13 @@ public class Player : Assets.Scripts.AI.Entity
     {
         var hands = transform.Find("Wrap/Hands");
         RaycastHit hit;
-        if (Physics.Raycast(eyesight, out hit, VisualDistance))
+        if (Physics.Raycast(eyesight, out hit, VisualDistance, 0xFFFFFF ^ (1 << 12)))
         {
             LookAt(hit.point - hands.position);
+        }
+        else
+        {
+            LookAt(eyesight.direction);
         }
     }
 
@@ -297,11 +301,13 @@ public class Player : Assets.Scripts.AI.Entity
 
     float LimitAngle(float angle)
     {
+        var before = angle;
         angle -= ((int)(angle / 360)) * 360;
         if (angle > 180)
             return angle - 360;
         else if (angle < -180)
             return angle + 360;
+        Debug.Log(before.ToString() + " -> " + angle.ToString());
         return angle;
     }
 }

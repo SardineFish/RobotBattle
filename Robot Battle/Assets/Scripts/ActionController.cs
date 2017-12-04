@@ -44,6 +44,7 @@ public class ActionController : MonoBehaviour {
         moveDirection = moveDirection.normalized;
         //transform.Translate(player.Speed* Time.deltaTime * moveDirection);
         ControllingPlayer.Move(moveDirection);
+        transform.position = ControllingPlayer.transform.position;
         //player.Move(moveDirection);
         #endregion
 
