@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Assets.Scripts.Weapons
 {
@@ -17,6 +18,7 @@ namespace Assets.Scripts.Weapons
         public float ShootInterval;
         public float BulletSpeed;
         public float ImpactForce;
+        public GameObject HitEffect;
 
         float LastShootTime = 0;
 
@@ -26,39 +28,50 @@ namespace Assets.Scripts.Weapons
         {
             return Shoot(direction);
         }
-
+        
         public virtual bool Shoot()
         {
             return Shoot(GetComponent<Player>().Looking);
         }
+        
         public virtual bool Shoot(Vector3 Direction)
         {
             return Shoot(new Ray(transform.position, Direction));
         }
+        
         public virtual bool Shoot(Ray shootRay)
         {
             if (Time.time - LastShootTime < ShootInterval)
                 return false;
             if (AmmoLoaded <= 0)
                 return false;
+            CmdShoot(shootRay);
+            
+            return true;
+        }
+        
+        [Command]
+        public void CmdShoot(Ray shootRay)
+        {
             AmmoLoaded -= 1;
             LastShootTime = Time.time;
             RaycastHit hit;
-            if(Physics.Raycast(shootRay ,out hit, FireRange))
+            if (Physics.Raycast(shootRay, out hit, FireRange))
             {
-                if(hit.transform.gameObject.tag == "Player")
+                if (hit.transform.gameObject.tag == "Player")
                 {
                     var player = hit.transform.gameObject.GetComponent<Player>();
                     //player.OnShotCallback(gameObject.GetComponent<Player>(), shootRay.direction, Damage, ImpactForce);
                     var message = new AttackMessage(new AttackMessage.AttackData(GetComponent<Player>(), player, Damage, shootRay.direction, ImpactForce));
                     message.Dispatch();
                 }
-                var hitAsh = Instantiate(Resources.Load("HitAsh") as GameObject);
-                hitAsh.transform.rotation = Quaternion.LookRotation(hit.normal);
-                hitAsh.transform.position = hit.point;
-                GameObject.Destroy(hitAsh, 0.5f);
+                if (HitEffect)
+                {
+                    var hitAsh = Instantiate(HitEffect);
+                    hitAsh.transform.rotation = Quaternion.LookRotation(hit.normal);
+                    hitAsh.transform.position = hit.point;
+                }
             }
-            return true;
         }
 
         public virtual bool Reload()

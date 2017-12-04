@@ -26,6 +26,7 @@ public class Player : Assets.Scripts.AI.Entity
     public float BodyRadius = 5;
     public Ray Looking;
     private Vector3 moveDirection = Vector3.zero;
+    public GameObject RobotAssistant = null;
     [SerializeField]
     public Vector3 MoveDirection
     {
@@ -57,6 +58,7 @@ public class Player : Assets.Scripts.AI.Entity
         footCollider = GetComponent<BoxCollider>();
         bodyCollider = GetComponent<CapsuleCollider>();
         GoalsManager = GetComponent<GoalsManager>();
+        OnGround = true;
     }
 
     // Update is called once per frame
@@ -102,10 +104,20 @@ public class Player : Assets.Scripts.AI.Entity
         OnGround = false;
     }
 
-    private void Move(Vector3 direction)
+    public void Move(Vector3 direction)
     {
-        direction = Vector3.Scale(direction, new Vector3(1, 0, 1));
-        rigidbody.AddForce(direction * MoveForce, ForceMode.Impulse);
+
+        var v = Vector3.Scale(Velocity, new Vector3(1, 0, 1));
+        if (!OnGround)
+        {
+            if (Vector3.Dot(moveDirection, v) < 0)
+                rigidbody.AddForce(-v.normalized * Vector3.Dot(moveDirection, -v.normalized) * ForceFly, ForceMode.Impulse);
+        }
+        else
+        {
+            direction = Vector3.Scale(direction, new Vector3(1, 0, 1));
+            rigidbody.AddForce(direction * MoveForce, ForceMode.Impulse);
+        }
     }
 
     public void AddMoveBehavior(Vector3 direction, float weight = 1)
@@ -174,6 +186,15 @@ public class Player : Assets.Scripts.AI.Entity
             //var turnR = Quaternion.FromToRotation(gunRForward, point - gunR.position);
             gunL.Rotate(0, 0, turnL);
             gunR.Rotate(0, 0, -turnR);
+        }
+    }
+    public void LookAt(Ray eyesight)
+    {
+        var hands = transform.Find("Wrap/Hands");
+        RaycastHit hit;
+        if (Physics.Raycast(eyesight, out hit, VisualDistance))
+        {
+            LookAt(hit.point - hands.position);
         }
     }
 
