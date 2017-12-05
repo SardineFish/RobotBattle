@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
-using UnityEditor;
 using UnityEngine.Networking;
 
 namespace Assets.Scripts.Weapons

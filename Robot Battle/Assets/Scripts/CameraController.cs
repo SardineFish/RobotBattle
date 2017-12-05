@@ -43,6 +43,7 @@ public class CameraController : MonoBehaviour {
             ver = -MaxVerticalAngle - camera.transform.localEulerAngles.x;
 		}
         camera.transform.Rotate(ver, 0, 0, Space.Self);
+        transform.position = ControllingPlayer.transform.position;
 
         Debug.DrawLine(camera.transform.position, camera.transform.position + camera.transform.forward * 100, Color.black);
         ControllingPlayer.LookAt(new Ray(camera.transform.position, camera.transform.forward));

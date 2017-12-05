@@ -51,7 +51,7 @@ namespace Assets.Scripts.Weapons
         }
         
         [Command]
-        public void CmdShoot(Ray shootRay)
+        public virtual void CmdShoot(Ray shootRay)
         {
             AmmoLoaded -= 1;
             LastShootTime = Time.time;
