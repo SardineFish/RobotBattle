@@ -50,16 +50,23 @@ public class PlayerBase : Entity
         }
     }
 
-
+    public int collideCount = 0;
     private void OnTriggerEnter(Collider other)
     {
+        collideCount++;
         OnGround = true;
         JumpCount = 0;
     }
 
     private void OnTriggerExit(Collider other)
     {
-        OnGround = false;
+        collideCount--;
+        if (collideCount <= 0)
+        {
+            collideCount = 0;
+            OnGround = false;
+        }
+        //OnGround = false;
     }
 
     public virtual void Move(Vector3 direction)
