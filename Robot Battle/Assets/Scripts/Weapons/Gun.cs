@@ -49,6 +49,22 @@ namespace Assets.Scripts.Weapons
             
             return true;
         }
+        [ClientRpc]
+        public virtual void RpcShoot(Ray shootRay)
+        {
+            if (isLocalPlayer)
+                return;
+            RaycastHit hit;
+            if (Physics.Raycast(shootRay, out hit, FireRange))
+            {
+                if (HitEffect)
+                {
+                    var hitAsh = Instantiate(HitEffect);
+                    hitAsh.transform.rotation = Quaternion.LookRotation(hit.normal);
+                    hitAsh.transform.position = hit.point;
+                }
+            }
+        }
         
         [Command]
         public virtual void CmdShoot(Ray shootRay)
@@ -65,12 +81,7 @@ namespace Assets.Scripts.Weapons
                     var message = new AttackMessage(new AttackMessage.AttackData(GetComponent<Player>(), player, Damage, shootRay.direction, ImpactForce));
                     message.Dispatch();
                 }
-                if (HitEffect)
-                {
-                    var hitAsh = Instantiate(HitEffect);
-                    hitAsh.transform.rotation = Quaternion.LookRotation(hit.normal);
-                    hitAsh.transform.position = hit.point;
-                }
+                RpcShoot(shootRay);
             }
         }
 
