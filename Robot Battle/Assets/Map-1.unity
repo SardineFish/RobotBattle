@@ -203,6 +203,7 @@ GameObject:
   - component: {fileID: 70859092}
   - component: {fileID: 70859094}
   - component: {fileID: 70859091}
+  - component: {fileID: 70859095}
   m_Layer: 0
   m_Name: ControlCamera
   m_TagString: Untagged
@@ -264,6 +265,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ControllingPlayer: {fileID: 0}
   ControllingGameObject: {fileID: 0}
+--- !u!114 &70859095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 70859090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b797043396037147b1d4df4f8cc9c47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Enable: 1
+  Range: 0
+  Strength: 20
+  MaxRange: 2
+  ShakeIncreasement: 0.3
+  ShakeDecreasement: 0.01
+  ShakeX: 0
+  ShakeY: 0
 --- !u!1 &77083132
 GameObject:
   m_ObjectHideFlags: 0

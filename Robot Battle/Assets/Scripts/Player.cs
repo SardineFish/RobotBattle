@@ -245,7 +245,7 @@ public class Player : PlayerBase
     {
         if (isLocalPlayer)
         {
-            CmdBroadcastControl(new ControlPack(this.Looking.direction, this.MoveDirection, Firing));
+            CmdBroadcastControl(new ControlPack(transform.position,this.Looking.direction, this.MoveDirection, Firing));
             //Debug.Log(MoveDirection);
         }
         DoMove(MoveDirection);
@@ -375,10 +375,10 @@ public class Player : PlayerBase
     [ClientRpc]
     public void RpcRecvControl(ControlPack control)
     {
-        //transform.position = control.Position;
         if (isLocalPlayer)
             return;
-        //Debug.Log(control.Move);
+        Debug.Log(control.Position);
+        transform.position = control.Position;
         this.MoveDirection = control.Move;
         LookAt(control.Look);
         Firing = control.Fire;
@@ -387,7 +387,6 @@ public class Player : PlayerBase
     [Command]
     public void CmdBroadcastControl(ControlPack control)
     {
-        control.Position = transform.position;
         RpcRecvControl(control);
     }
 }

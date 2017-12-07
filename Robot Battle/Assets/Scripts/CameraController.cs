@@ -8,11 +8,13 @@ public class CameraController : MonoBehaviour {
     public GameObject ControllingGameObject;
     public Player ControllingPlayer;
     new GameObject camera;
+    private ShakeCamera shakeCamera;
 
     // Use this for initialization
     void Start ()
     {
         camera = transform.Find("CameraWrap/Camera").gameObject;
+        shakeCamera = GetComponent<ShakeCamera>();
     }
 	
 	// Update is called once per frame
@@ -27,6 +29,10 @@ public class CameraController : MonoBehaviour {
         var ver = -Input.GetAxis("Mouse Y");
         hor *= MouseSensitivity;
         ver *= MouseSensitivity;
+
+        hor += shakeCamera.ShakeX;
+	    ver += shakeCamera.ShakeY;
+
         transform.Rotate(transform.up, hor);
         var rotateTo = camera.transform.localEulerAngles.x + ver;
         if(rotateTo>180)

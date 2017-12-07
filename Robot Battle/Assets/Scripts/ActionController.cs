@@ -8,10 +8,12 @@ public class ActionController : MonoBehaviour {
     Vector3 moveDirection;
     public Player ControllingPlayer;
     public GameObject ControllingGameObject;
+    private ShakeCamera shakeCamera;
 
     void Start () {
         rigidbody = GetComponent<Rigidbody>();
-	}
+        shakeCamera = GetComponent<ShakeCamera>();
+    }
 	
 	void Update ()
     {
