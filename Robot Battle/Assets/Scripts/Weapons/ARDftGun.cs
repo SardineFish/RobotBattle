@@ -26,6 +26,7 @@ namespace Assets.Scripts.Weapons
 
         public override void RenderShoot(Ray shootray)
         {
+            base.RenderShoot(shootray);
             var gunLeft = transform.Find("Wrap/Hands/Gun-L/Gun-Inside/Gun-Barrel").gameObject;
             var gunRight = transform.Find("Wrap/Hands/Gun-R/Gun-Inside/Gun-Barrel").gameObject;
             var rayL = new Ray(gunLeft.transform.position, -gunLeft.transform.right);
@@ -38,15 +39,6 @@ namespace Assets.Scripts.Weapons
             bulletR.transform.position = gunRight.transform.position + rayR.direction * 4;
             bulletL.transform.rotation = Quaternion.LookRotation(rayL.direction);
             bulletR.transform.rotation = Quaternion.LookRotation(rayR.direction);
-        }
-
-        public override void RpcShoot(Ray shootRay)
-        {
-            if (isLocalPlayer)
-                return;
-
-            base.RpcShoot(shootRay);
-            
         }
 
         public ARDftGun() : base()

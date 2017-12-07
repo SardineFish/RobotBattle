@@ -45,16 +45,10 @@ namespace Assets.Scripts.Weapons
                 return false;
             if (AmmoLoaded <= 0)
                 return false;
-            CmdShoot(shootRay);
-            if (isLocalPlayer)
-                RenderShoot(shootRay);
+            AmmoLoaded -= 1;
+            LastShootTime = Time.time;
+            RenderShoot(shootRay);
             return true;
-        }
-        [ClientRpc]
-        public virtual void RpcShoot(Ray shootRay)
-        {
-            if (!isLocalPlayer)
-                RenderShoot(shootRay);
         }
         
         [Command]
@@ -72,7 +66,6 @@ namespace Assets.Scripts.Weapons
                     var message = new AttackMessage(new AttackMessage.AttackData(GetComponent<Player>(), player, Damage, shootRay.direction, ImpactForce));
                     message.Dispatch();
                 }
-                RpcShoot(shootRay);
             }
         }
 

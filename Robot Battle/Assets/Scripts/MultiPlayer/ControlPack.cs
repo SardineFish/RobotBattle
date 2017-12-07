@@ -16,6 +16,9 @@ public class ControlPack
     [SerializeField]
     public bool Fire;
 
+    [SerializeField]
+    public Vector3 Position;
+
     public ControlPack(Vector3 look, Vector3 move, bool fire)
     {
         Look = look;

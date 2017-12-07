@@ -62,6 +62,10 @@ public class ActionController : MonoBehaviour {
         {
             ControllingPlayer.Fire();
         }
+        else
+        {
+            ControllingPlayer.Firing = false;
+        }
 
     }
 }

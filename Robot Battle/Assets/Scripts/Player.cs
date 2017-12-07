@@ -19,6 +19,7 @@ public class PlayerBase : Entity
     public float PowerFly = 1;
     public bool OnGround = false;
     public int MaxJump = 2;
+    public bool Firing = false;
     public int JumpCount = 0;
     public float VisualDistance = 500;
     public float VisualRange = 90;
@@ -90,6 +91,11 @@ public class PlayerBase : Entity
     }
 
     public void Fire()
+    {
+        Firing = true;
+    }
+
+    public void DoFire()
     {
         var gun = GetComponent<Gun>();
         if (gun != null)
@@ -186,7 +192,7 @@ public class PlayerBase : Entity
         return false;
     }
 
-    public void Jump()
+    public virtual void Jump()
     {
         if (JumpCount < MaxJump)
         {
@@ -239,10 +245,12 @@ public class Player : PlayerBase
     {
         if (isLocalPlayer)
         {
-            CmdBroadcastControl(new ControlPack(this.Looking.direction, this.MoveDirection, false));
-            Debug.Log(MoveDirection);
+            CmdBroadcastControl(new ControlPack(this.Looking.direction, this.MoveDirection, Firing));
+            //Debug.Log(MoveDirection);
         }
         DoMove(MoveDirection);
+        if (Firing)
+            DoFire();
         if (isLocalPlayer)
             MoveDirection = Vector3.zero;
         var v = (Vector3.Scale(this.rigidbody.velocity, new Vector3(1, 0, 1)));
@@ -339,21 +347,47 @@ public class Player : PlayerBase
         }
     }
 
+    public override void Jump()
+    {
+        if (isLocalPlayer)
+            DoJump();
+        CmdJump();
+    }
+
+    public void DoJump()
+    {
+        base.Jump();
+    }
+
+    [ClientRpc]
+    public void RpcJump()
+    {
+        if (!isLocalPlayer)
+            DoJump();
+    }
+
+    [Command]
+    public void CmdJump()
+    {
+        RpcJump();
+    }
+
     [ClientRpc]
     public void RpcRecvControl(ControlPack control)
     {
+        //transform.position = control.Position;
         if (isLocalPlayer)
             return;
         //Debug.Log(control.Move);
         this.MoveDirection = control.Move;
         LookAt(control.Look);
-        if (control.Fire)
-            Fire();
+        Firing = control.Fire;
     }
 
     [Command]
     public void CmdBroadcastControl(ControlPack control)
     {
+        control.Position = transform.position;
         RpcRecvControl(control);
     }
 }
