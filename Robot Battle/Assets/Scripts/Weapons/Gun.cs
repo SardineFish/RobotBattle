@@ -46,24 +46,15 @@ namespace Assets.Scripts.Weapons
             if (AmmoLoaded <= 0)
                 return false;
             CmdShoot(shootRay);
-            
+            if (isLocalPlayer)
+                RenderShoot(shootRay);
             return true;
         }
         [ClientRpc]
         public virtual void RpcShoot(Ray shootRay)
         {
-            if (isLocalPlayer)
-                return;
-            RaycastHit hit;
-            if (Physics.Raycast(shootRay, out hit, FireRange))
-            {
-                if (HitEffect)
-                {
-                    var hitAsh = Instantiate(HitEffect);
-                    hitAsh.transform.rotation = Quaternion.LookRotation(hit.normal);
-                    hitAsh.transform.position = hit.point;
-                }
-            }
+            if (!isLocalPlayer)
+                RenderShoot(shootRay);
         }
         
         [Command]
@@ -82,6 +73,20 @@ namespace Assets.Scripts.Weapons
                     message.Dispatch();
                 }
                 RpcShoot(shootRay);
+            }
+        }
+
+        public virtual void RenderShoot(Ray shootRay)
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(shootRay, out hit, FireRange))
+            {
+                if (HitEffect)
+                {
+                    var hitAsh = Instantiate(HitEffect);
+                    hitAsh.transform.rotation = Quaternion.LookRotation(hit.normal);
+                    hitAsh.transform.position = hit.point;
+                }
             }
         }
 

@@ -45,6 +45,12 @@ namespace Assets.Scripts.AI
                 nextState.OnEnter(previouseType);
         }
 
+        [Command]
+        public void CmdBroadcastStateChange(string state)
+        {
+            
+        }
+
         public virtual void OnMessage(Message message)
         {
 

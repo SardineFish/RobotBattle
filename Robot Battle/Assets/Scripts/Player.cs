@@ -5,8 +5,9 @@ using Assets.Scripts.AI;
 using Assets.Scripts.Weapons;
 using Assets.Scripts.AI.Messages;
 using Assets.Scripts.AI.Goals;
+using UnityEngine.Networking;
 
-public class Player : Assets.Scripts.AI.Entity
+public class PlayerBase : Entity
 {
     public float Speed = 0;
     public float MoveForce = 1;
@@ -25,8 +26,17 @@ public class Player : Assets.Scripts.AI.Entity
     public float MaxTurnSpeed = 180;
     public float BodyRadius = 5;
     public Ray Looking;
-    private Vector3 moveDirection = Vector3.zero;
+    protected Vector3 moveDirection = Vector3.zero;
     public GameObject RobotAssistant = null;
+    public float HP = 100;
+    public float Defence = 0;
+    public PositionMemoryManager Memory = new PositionMemoryManager();
+    public GoalsManager GoalsManager;
+    protected new Rigidbody rigidbody;
+    protected BoxCollider footCollider;
+    protected CapsuleCollider bodyCollider;
+    protected float lastShootTime = 0;
+
     [SerializeField]
     public Vector3 MoveDirection
     {
@@ -40,109 +50,35 @@ public class Player : Assets.Scripts.AI.Entity
         }
     }
 
-    public float HP = 100;
-    public float Defence = 0;
 
-    public PositionMemoryManager Memory = new PositionMemoryManager();
-    public GoalsManager GoalsManager;
-    new Rigidbody rigidbody;
-    BoxCollider footCollider;
-    CapsuleCollider bodyCollider;
-
-    float lastShootTime = 0;
-
-    // Use this for initialization
-    void Start()
-    {
-        rigidbody = GetComponent<Rigidbody>();
-        footCollider = GetComponent<BoxCollider>();
-        bodyCollider = GetComponent<CapsuleCollider>();
-        GoalsManager = GetComponent<GoalsManager>();
-        OnGround = true;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        Move(MoveDirection);
-        MoveDirection = Vector3.zero;
-        var v = (Vector3.Scale(rigidbody.velocity, new Vector3(1, 0, 1)));
-        this.Velocity = rigidbody.velocity;
-
-        this.Looking = new Ray(transform.Find("Wrap/Hands").position, -transform.Find("Wrap/Hands").right);
-
-        if (this.OnGround)
-        {
-            if (v.magnitude == 0)
-                this.MoveForce = this.MaxForce;
-            else
-            {
-                this.MoveForce = Power / v.magnitude;
-                if (this.MoveForce > MaxForce)
-                    MoveForce = MaxForce;
-            }
-        }
-        else
-        {
-            if (v.magnitude <= 0)
-                this.MoveForce = this.ForceFly;
-            else
-            {
-                this.MoveForce = PowerFly / v.magnitude;
-                if (this.MoveForce > this.ForceFly)
-                    this.MoveForce = this.ForceFly;
-            }
-        }
-    }
     private void OnTriggerEnter(Collider other)
     {
         OnGround = true;
         JumpCount = 0;
     }
+
     private void OnTriggerExit(Collider other)
     {
         OnGround = false;
     }
 
-    public void Move(Vector3 direction)
+    public virtual void Move(Vector3 direction)
     {
+        MoveDirection = direction;
+    }
 
+    protected virtual void DoMove(Vector3 direction)
+    {
         var v = Vector3.Scale(Velocity, new Vector3(1, 0, 1));
         if (!OnGround)
         {
             if (Vector3.Dot(moveDirection, v) < 0)
-                rigidbody.AddForce(-v.normalized * Vector3.Dot(moveDirection, -v.normalized) * ForceFly, ForceMode.Impulse);
+                this.rigidbody.AddForce(-v.normalized * Vector3.Dot(moveDirection, -v.normalized) * ForceFly, ForceMode.Impulse);
         }
         else
         {
             direction = Vector3.Scale(direction, new Vector3(1, 0, 1));
-            rigidbody.AddForce(direction * MoveForce, ForceMode.Impulse);
-        }
-    }
-
-    public void AddMoveBehavior(Vector3 direction, float weight = 1)
-    {
-        MoveDirection = MoveDirection + direction.normalized * weight;
-    }
-
-    public bool MoveTo(Vector3 target)
-    {
-        var dx = Vector3.Scale(target - transform.position, new Vector3(1, 0, 1));
-        if (dx.magnitude < 0.01)
-            return true;
-        else
-        {
-            Move(dx);
-            return false;
-        }
-    }
-
-    public void Jump()
-    {
-        if (JumpCount < MaxJump)
-        {
-            rigidbody.AddForce(transform.up * JumpForce, ForceMode.Impulse);
-            JumpCount++;
+            this.rigidbody.AddForce(direction * MoveForce, ForceMode.Impulse);
         }
     }
 
@@ -159,9 +95,9 @@ public class Player : Assets.Scripts.AI.Entity
         var rotation = Quaternion.LookRotation(forward);
         var hor = LimitAngle(rotation.eulerAngles.y - this.transform.rotation.eulerAngles.y);
         var ver = LimitAngle(-(rotation.eulerAngles.x + hands.localEulerAngles.y));
-        if (Mathf.Abs(hor) > MaxTurnSpeed * Time.deltaTime)
+        if (Mathf.Abs((float) hor) > MaxTurnSpeed * Time.deltaTime)
             hor = Mathf.Sign(hor) * MaxTurnSpeed * Time.deltaTime;
-        if (Mathf.Abs(ver) > MaxTurnSpeed * Time.deltaTime)
+        if (Mathf.Abs((float) ver) > MaxTurnSpeed * Time.deltaTime)
             ver = Mathf.Sign(ver) * MaxTurnSpeed * Time.deltaTime;
         transform.Rotate(0, hor, 0, Space.Self);
         hands.Rotate(0, ver, 0, Space.Self);
@@ -188,18 +124,23 @@ public class Player : Assets.Scripts.AI.Entity
             gunR.Rotate(0, 0, -turnR);
         }
     }
-    public void LookAt(Ray eyesight)
+
+    public bool CanSee(Player player)
     {
-        var hands = transform.Find("Wrap/Hands");
+        var self = transform.Find("Wrap/Hands");
+        var target = player.transform.Find("Wrap/Hands");
+        var ray = new Ray(self.position, target.position - self.position);
+        if (Vector3.Dot(Looking.direction, ray.direction) < Mathf.Cos(Mathf.PI * (VisualRange / 180)))
+            return false;
         RaycastHit hit;
-        if (Physics.Raycast(eyesight, out hit, VisualDistance, 0xFFFFFF ^ (1 << 12)))
+        if(Physics.Raycast(ray,out hit, VisualDistance))
         {
-            LookAt(hit.point - hands.position);
+            if(hit.transform.gameObject == player.gameObject || hit.transform == target)
+            {
+                return true;
+            }
         }
-        else
-        {
-            LookAt(eyesight.direction);
-        }
+        return false;
     }
 
     public bool CanGoStraight(Vector3 position)
@@ -224,6 +165,130 @@ public class Player : Assets.Scripts.AI.Entity
         }
         return false;
     }
+
+    public bool CanSee(Vector3 position)
+    {
+        if (!CanGoStraight(position))
+        {
+            return false;
+        }
+        if (Vector3.Dot(Looking.direction, (position - Looking.origin).normalized) <= Mathf.Cos(Mathf.PI * (VisualRange / 100)))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public void Jump()
+    {
+        if (JumpCount < MaxJump)
+        {
+            rigidbody.AddForce(transform.up * JumpForce, ForceMode.Impulse);
+            JumpCount++;
+        }
+    }
+
+    public void LookAt(Ray eyesight)
+    {
+        var hands = transform.Find("Wrap/Hands");
+        RaycastHit hit;
+        if (Physics.Raycast(eyesight, out hit, VisualDistance, 0xFFFFFF ^ (1 << 12)))
+        {
+            LookAt(hit.point - hands.position);
+        }
+        else
+        {
+            LookAt(eyesight.direction);
+        }
+    }
+
+
+    protected float LimitAngle(float angle)
+    {
+        var before = angle;
+        angle -= ((int)(angle / 360)) * 360;
+        if (angle > 180)
+            return angle - 360;
+        else if (angle < -180)
+            return angle + 360;
+        //Debug.Log(before.ToString() + " -> " + angle.ToString());
+        return angle;
+    }
+}
+
+public class Player : PlayerBase
+{
+
+    private void Start()
+    {
+        this.rigidbody = GetComponent<Rigidbody>();
+        footCollider = GetComponent<BoxCollider>();
+        bodyCollider = GetComponent<CapsuleCollider>();
+        GoalsManager = GetComponent<GoalsManager>();
+        OnGround = true;
+    }
+
+    private void Update()
+    {
+        if (isLocalPlayer)
+        {
+            CmdBroadcastControl(new ControlPack(this.Looking.direction, this.MoveDirection, false));
+            Debug.Log(MoveDirection);
+        }
+        DoMove(MoveDirection);
+        if (isLocalPlayer)
+            MoveDirection = Vector3.zero;
+        var v = (Vector3.Scale(this.rigidbody.velocity, new Vector3(1, 0, 1)));
+        this.Velocity = this.rigidbody.velocity;
+
+        this.Looking = new Ray(transform.Find("Wrap/Hands").position, -transform.Find("Wrap/Hands").right);
+
+        if (this.OnGround)
+        {
+            if (v.magnitude == 0)
+                this.MoveForce = this.MaxForce;
+            else
+            {
+                this.MoveForce = Power / v.magnitude;
+                if (this.MoveForce > MaxForce)
+                    MoveForce = MaxForce;
+            }
+        }
+        else
+        {
+            if (v.magnitude <= 0)
+                this.MoveForce = this.ForceFly;
+            else
+            {
+                this.MoveForce = PowerFly / v.magnitude;
+                if (this.MoveForce > this.ForceFly)
+                    this.MoveForce = this.ForceFly;
+            }
+        }
+    }
+
+    // Use this for initialization
+
+    // Update is called once per frame
+
+    public void AddMoveBehavior(Vector3 direction, float weight = 1)
+    {
+        MoveDirection = MoveDirection + direction.normalized * weight;
+    }
+
+    public bool MoveTo(Vector3 target)
+    {
+        var dx = Vector3.Scale(target - transform.position, new Vector3(1, 0, 1));
+        if (dx.magnitude < 0.01)
+            return true;
+        else
+        {
+            Move(dx);
+            return false;
+        }
+    }
+
+    
 
     /*public void OnShotCallback(Player shooter, Vector3 direction, float Damage, float impactForce)
     {
@@ -255,37 +320,6 @@ public class Player : Assets.Scripts.AI.Entity
             base.OnMessage(message);
     }
 
-    public bool CanSee(Player player)
-    {
-        var self = transform.Find("Wrap/Hands");
-        var target = player.transform.Find("Wrap/Hands");
-        var ray = new Ray(self.position, target.position - self.position);
-        if (Vector3.Dot(Looking.direction, ray.direction) < Mathf.Cos(Mathf.PI * (VisualRange / 180)))
-            return false;
-        RaycastHit hit;
-        if(Physics.Raycast(ray,out hit, VisualDistance))
-        {
-            if(hit.transform.gameObject == player.gameObject || hit.transform == target)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public bool CanSee(Vector3 position)
-    {
-        if (!CanGoStraight(position))
-        {
-            return false;
-        }
-        if (Vector3.Dot(Looking.direction, (position - Looking.origin).normalized) <= Mathf.Cos(Mathf.PI * (VisualRange / 100)))
-        {
-            return true;
-        }
-        return false;
-    }
-
     public void VisualScan()
     {
         foreach(var obj in GameObject.FindGameObjectsWithTag("Player"))
@@ -298,16 +332,21 @@ public class Player : Assets.Scripts.AI.Entity
         }
     }
 
-
-    float LimitAngle(float angle)
+    [ClientRpc]
+    public void RpcRecvControl(ControlPack control)
     {
-        var before = angle;
-        angle -= ((int)(angle / 360)) * 360;
-        if (angle > 180)
-            return angle - 360;
-        else if (angle < -180)
-            return angle + 360;
-        Debug.Log(before.ToString() + " -> " + angle.ToString());
-        return angle;
+        if (isLocalPlayer)
+            return;
+        //Debug.Log(control.Move);
+        this.MoveDirection = control.Move;
+        LookAt(control.Look);
+        if (control.Fire)
+            Fire();
+    }
+
+    [Command]
+    public void CmdBroadcastControl(ControlPack control)
+    {
+        RpcRecvControl(control);
     }
 }

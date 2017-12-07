@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class MultiPlayer : MonoBehaviour {
+public class MultiPlayer : NetworkBehaviour {
     public bool LocalPlayer = false;
 	// Use this for initialization
 	void Start () {
