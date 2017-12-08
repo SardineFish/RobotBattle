@@ -60,13 +60,11 @@ public class GameSystem : Singleton<GameSystem> {
 	// Update is called once per frame
 	void Update ()
 	{
-	    if (Input.GetKeyDown(KeyCode.Escape))
+	    if (GameStarted && Input.GetKeyDown(KeyCode.Escape))
 	    {
 	        ReleaseControl();
-	    }
-	    if (GameStarted && !ControllerAttached && Input.GetKeyDown(KeyCode.Mouse0))
-	    {
-	        AttachControl();
+	        MainGUI.Current.GameGUI.SetActive(false);
+	        MainGUI.Current.PauseMenu.SetActive(true);
 	    }
 	    if (ControllerAttached)
 	        Cursor.lockState = CursorLockMode;

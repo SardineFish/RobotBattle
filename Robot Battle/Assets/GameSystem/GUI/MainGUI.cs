@@ -5,9 +5,8 @@ using UnityEngine;
 public class MainGUI : Singleton<MainGUI> {
     public GameObject GameGUI;
     public GameObject MainMenu;
-    public GameObject ButtonHost;
-    public GameObject ButtonJoin;
-    public GameObject TextHost;
+    public GameObject PauseMenu;
+    public GameObject DeathScreen;
 	// Use this for initialization
 	void Start () {
         Current = this;

@@ -16,6 +16,8 @@ public class PauseMenu : MonoBehaviour {
 
     public void ButtonResumeClick()
     {
+        gameObject.SetActive(false);
+        MainGUI.Current.GameGUI.SetActive(true);
         GameSystem.Current.AttachControl();
     }
 
