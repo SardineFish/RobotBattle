@@ -10,8 +10,11 @@ public class ShakeCamera : MonoBehaviour {
     public float MaxRange = 1;
     public float ShakeIncreasement = 0.3f;
     public float ShakeDecreasement = 0.5f;
+    public float MaxCrosshair = 2;
+    public float CrosshairScale = 1;
     public float ShakeX;
     public float ShakeY;
+    public GameObject Crosshair;
     void Start () {
 	}
 	
@@ -19,6 +22,7 @@ public class ShakeCamera : MonoBehaviour {
 	void Update () {
         if (Enable)
         {
+            
             var x = Mathf.PerlinNoise(Time.time * Strength, 1);
             var y = Mathf.PerlinNoise(1, Time.time * Strength);
             x -= 0.5f;
@@ -36,8 +40,12 @@ public class ShakeCamera : MonoBehaviour {
             }
             else
             {
-                Range = 0;
+                Range -= ShakeDecreasement;
+                if (Range < 0)
+                    Range = 0;
             }
+            CrosshairScale = (Range / MaxRange) * (MaxCrosshair - 1) + 1;
+            Crosshair.GetComponent<RectTransform>().localScale = new Vector3(CrosshairScale, CrosshairScale, 1);
         }
 	}
 }

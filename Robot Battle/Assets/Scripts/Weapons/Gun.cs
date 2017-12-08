@@ -41,6 +41,7 @@ namespace Assets.Scripts.Weapons
         
         public virtual bool Shoot(Ray shootRay)
         {
+            //Debug.DrawLine(shootRay.origin, shootRay.origin + shootRay.direction * 100, Color.magenta);
             if (Time.time - LastShootTime < ShootInterval)
                 return false;
             if (AmmoLoaded <= 0)
@@ -48,15 +49,20 @@ namespace Assets.Scripts.Weapons
             AmmoLoaded -= 1;
             LastShootTime = Time.time;
             RenderShoot(shootRay);
+            if (isLocalPlayer)
+                CmdShoot(shootRay.origin,shootRay.direction);
             return true;
         }
         
         [Command]
-        public virtual void CmdShoot(Ray shootRay)
+        public virtual void CmdShoot(Vector3 pos, Vector3 dir)
         {
+            var shootRay = new Ray(pos, dir);
             AmmoLoaded -= 1;
             LastShootTime = Time.time;
             RaycastHit hit;
+            Debug.DrawLine(transform.position, transform.position + shootRay.direction * 100, Color.cyan);
+            Debug.DrawLine(shootRay.origin, shootRay.origin + shootRay.direction * 100, Color.magenta);
             if (Physics.Raycast(shootRay, out hit, FireRange))
             {
                 if (hit.transform.gameObject.tag == "Player")

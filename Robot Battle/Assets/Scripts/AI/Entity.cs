@@ -28,6 +28,11 @@ namespace Assets.Scripts.AI
         
         public void ChangeState(Type stateType)
         {
+            if (isServer)
+            {
+                if (stateType == typeof(PlayerDeadState))
+                    RpcStateChange(PlayerDeadState.StateName);
+            }
             if (!stateType.IsSubclassOf(typeof(State)))
             {
                 throw new Exception("A State required.");
@@ -45,10 +50,21 @@ namespace Assets.Scripts.AI
                 nextState.OnEnter(previouseType);
         }
 
+        [ClientRpc]
+        public void RpcStateChange(string state)
+        {
+            if (isServer)
+                return;
+            if (state == PlayerDeadState.StateName)
+            {
+                this.ChangeState(typeof(PlayerDeadState));
+            }
+        }
+
         [Command]
         public void CmdBroadcastStateChange(string state)
         {
-            
+            RpcStateChange(state);
         }
 
         public virtual void OnMessage(Message message)
