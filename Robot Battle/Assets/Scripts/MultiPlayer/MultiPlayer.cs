@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using Assets.Scripts.AI.StateMachine;
+using Assets.Scripts.AI;
 
 public class MultiPlayer : NetworkBehaviour {
     public bool LocalPlayer = false;
@@ -13,14 +15,17 @@ public class MultiPlayer : NetworkBehaviour {
     public override void OnStartLocalPlayer()
     {
         LocalPlayer = isLocalPlayer;
-        GameSystem.Now.Controller.GetComponent<ActionController>().ControllingGameObject = gameObject;
-        GameSystem.Now.Controller.GetComponent<CameraController>().ControllingGameObject = gameObject;
-        GameSystem.Now.Controller.GetComponent<CameraFollow>().FollowTarget = gameObject;
-        GameSystem.Now.GameStart();
+        GameSystem.Current.GameStart(gameObject);
+        GameSystem.Current.AttachControl();
     }
 
     // Update is called once per frame
-    void Update () {
-		
+    void Update ()
+    {
+        if (isLocalPlayer && GetComponent<Player>().State is PlayerDeadState)
+        {
+            GameSystem.Current.Controller.GetComponent<Controller>().SetTarget(null);
+            GameSystem.Current.ReleaseControl();
+        }
 	}
 }

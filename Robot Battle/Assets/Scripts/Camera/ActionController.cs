@@ -17,10 +17,12 @@ public class ActionController : MonoBehaviour {
 	
 	void Update ()
     {
-        if (!GameSystem.Now.GameStarted)
+        if (!GameSystem.Current.GameStarted)
             return;
         if (ControllingGameObject)
             ControllingPlayer = ControllingGameObject.GetComponent<Player>();
+        else
+            return;
         #region Move
         moveDirection = Vector3.zero;
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))

@@ -19,10 +19,12 @@ public class CameraController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (!GameSystem.Now.GameStarted)
+        if (!GameSystem.Current.GameStarted)
             return;
-        if (ControllingGameObject)
-            ControllingPlayer = ControllingGameObject.GetComponent<Player>();
+	    if (ControllingGameObject)
+	        ControllingPlayer = ControllingGameObject.GetComponent<Player>();
+	    else
+	        return;
         #region Mouse
 
         var hor = Input.GetAxis("Mouse X");

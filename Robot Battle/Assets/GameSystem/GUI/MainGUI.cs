@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainGUI : MonoBehaviour {
+public class MainGUI : Singleton<MainGUI> {
     public GameObject GameGUI;
     public GameObject MainMenu;
     public GameObject ButtonHost;
@@ -10,7 +10,7 @@ public class MainGUI : MonoBehaviour {
     public GameObject TextHost;
 	// Use this for initialization
 	void Start () {
-		
+        Current = this;
 	}
 	
 	// Update is called once per frame
