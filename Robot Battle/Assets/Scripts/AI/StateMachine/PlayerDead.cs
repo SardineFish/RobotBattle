@@ -24,6 +24,8 @@ namespace Assets.Scripts.AI
             transform.Find("Wrap/Hands/Gun-R").gameObject.GetComponent<Collider>().enabled = true;
             transform.Find("Wrap/Hands").gameObject.GetComponent<Collider>().enabled = false;
             GetComponent<CapsuleCollider>().enabled = false;
+            if (isLocalPlayer)
+                GameSystem.Current.PlayerDie();
         }
     }
 }

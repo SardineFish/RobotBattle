@@ -26,6 +26,7 @@ public class PlayerBase : Entity
     public float ShootImpact = 1;
     public float MaxTurnSpeed = 180;
     public float BodyRadius = 5;
+    public int TeamID;
     public Ray Looking;
     protected Vector3 moveDirection = Vector3.zero;
     public GameObject RobotAssistant = null;
@@ -388,5 +389,11 @@ public class Player : PlayerBase
     public void CmdBroadcastControl(ControlPack control)
     {
         RpcRecvControl(control);
+    }
+
+    [Command]
+    public void CmdDestroy()
+    {
+        NetworkServer.Destroy(gameObject);
     }
 }

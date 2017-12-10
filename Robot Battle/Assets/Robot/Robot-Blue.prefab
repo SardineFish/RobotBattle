@@ -1318,6 +1318,7 @@ MonoBehaviour:
   ShootImpact: 1
   MaxTurnSpeed: 10000000
   BodyRadius: 5
+  TeamID: 2
   RobotAssistant: {fileID: 0}
   HP: 100
   Defence: 0
