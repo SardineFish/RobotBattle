@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Assets.Scripts.Weapons
 {
@@ -20,24 +21,24 @@ namespace Assets.Scripts.Weapons
 
         public override bool Shoot()
         {
-            if (base.Shoot())
-            {
-                var gunLeft = transform.Find("Wrap/Hands/Gun-L/Gun-Inside/Gun-Barrel").gameObject;
-                var gunRight = transform.Find("Wrap/Hands/Gun-R/Gun-Inside/Gun-Barrel").gameObject;
-                var rayL = new Ray(gunLeft.transform.position, -gunLeft.transform.right);
-                var rayR = new Ray(gunRight.transform.position, -gunRight.transform.right);
-                Debug.DrawLine(rayL.origin, rayL.origin + rayL.direction * 100, Color.red);
-                Debug.DrawLine(rayR.origin, rayR.origin + rayR.direction * 100, Color.red);
-                var bulletL = Instantiate(Resources.Load("Bullet") as GameObject);
-                var bulletR = Instantiate(Resources.Load("Bullet") as GameObject);
-                bulletL.transform.position = gunLeft.transform.position + rayL.direction * 4;
-                bulletR.transform.position = gunRight.transform.position + rayR.direction * 4;
-                bulletL.transform.rotation = Quaternion.LookRotation(rayL.direction);
-                bulletR.transform.rotation = Quaternion.LookRotation(rayR.direction);
-                return true;
-            }
-            else
-                return false;
+            return base.Shoot();
+        }
+
+        public override void RenderShoot(Ray shootray)
+        {
+            base.RenderShoot(shootray);
+            var gunLeft = transform.Find("Wrap/Hands/Gun-L/Gun-Inside/Gun-Barrel").gameObject;
+            var gunRight = transform.Find("Wrap/Hands/Gun-R/Gun-Inside/Gun-Barrel").gameObject;
+            var rayL = new Ray(gunLeft.transform.position, -gunLeft.transform.right);
+            var rayR = new Ray(gunRight.transform.position, -gunRight.transform.right);
+            Debug.DrawLine(rayL.origin, rayL.origin + rayL.direction * 100, Color.red);
+            Debug.DrawLine(rayR.origin, rayR.origin + rayR.direction * 100, Color.red);
+            var bulletL = Instantiate(Resources.Load("Bullet") as GameObject);
+            var bulletR = Instantiate(Resources.Load("Bullet") as GameObject);
+            bulletL.transform.position = gunLeft.transform.position + rayL.direction * 4;
+            bulletR.transform.position = gunRight.transform.position + rayR.direction * 4;
+            bulletL.transform.rotation = Quaternion.LookRotation(rayL.direction);
+            bulletR.transform.rotation = Quaternion.LookRotation(rayR.direction);
         }
 
         public ARDftGun() : base()

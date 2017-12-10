@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Assets.Scripts.AI
 {
-    public class Entity : MonoBehaviour
+    public class Entity : NetworkBehaviour
     {
         public State State
         {
@@ -27,6 +28,11 @@ namespace Assets.Scripts.AI
         
         public void ChangeState(Type stateType)
         {
+            if (isServer)
+            {
+                if (stateType == typeof(PlayerDeadState))
+                    RpcStateChange(PlayerDeadState.StateName);
+            }
             if (!stateType.IsSubclassOf(typeof(State)))
             {
                 throw new Exception("A State required.");
@@ -42,6 +48,23 @@ namespace Assets.Scripts.AI
             var nextState = gameObject.AddComponent(stateType) as State;
             if (previouseType != null)
                 nextState.OnEnter(previouseType);
+        }
+
+        [ClientRpc]
+        public void RpcStateChange(string state)
+        {
+            if (isServer)
+                return;
+            if (state == PlayerDeadState.StateName)
+            {
+                this.ChangeState(typeof(PlayerDeadState));
+            }
+        }
+
+        [Command]
+        public void CmdBroadcastStateChange(string state)
+        {
+            RpcStateChange(state);
         }
 
         public virtual void OnMessage(Message message)

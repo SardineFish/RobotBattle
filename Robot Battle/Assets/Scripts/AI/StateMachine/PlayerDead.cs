@@ -8,6 +8,7 @@ namespace Assets.Scripts.AI
 {
     public class PlayerDeadState: State
     {
+        public const string StateName = "PlayerDeadState";
         public float DestoryTime = 5;
         void Start()
         {
@@ -22,10 +23,9 @@ namespace Assets.Scripts.AI
             transform.Find("Wrap/Hands/Gun-R").gameObject.AddComponent<Rigidbody>().useGravity = true;
             transform.Find("Wrap/Hands/Gun-R").gameObject.GetComponent<Collider>().enabled = true;
             transform.Find("Wrap/Hands").gameObject.GetComponent<Collider>().enabled = false;
-            GameObject.Destroy(transform.Find("Wrap/Body/Core").gameObject);
             GetComponent<CapsuleCollider>().enabled = false;
-
-            GameObject.Destroy(gameObject, DestoryTime);
+            if (isLocalPlayer)
+                GameSystem.Current.PlayerDie();
         }
     }
 }

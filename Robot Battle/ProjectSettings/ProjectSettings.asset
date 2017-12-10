@@ -602,7 +602,7 @@ PlayerSettings:
   cloudServicesEnabled:
     UNet: 1
   facebookSdkVersion: 7.9.4
-  apiCompatibilityLevel: 2
+  apiCompatibilityLevel: 3
   cloudProjectId: 8c0926ff-6e41-4a46-b7c0-513cc279137b
   projectName: Rotot Battle
   organizationId: sardinefish

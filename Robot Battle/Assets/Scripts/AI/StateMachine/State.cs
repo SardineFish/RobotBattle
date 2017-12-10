@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using Assets.Scripts.AI.Messages;
+using UnityEngine.Networking;
 
 namespace Assets.Scripts.AI
 {
-    public class State: MonoBehaviour
+    public class State: NetworkBehaviour
     {
         public bool Disposed { get; private set; }
 
