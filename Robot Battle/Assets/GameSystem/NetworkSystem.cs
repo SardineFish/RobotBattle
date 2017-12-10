@@ -109,8 +109,9 @@ public class NetworkSystem : NetworkManager
 
     public void JoinTeam(int teamID)
     {
-        //ClientScene.AddPlayer(0);
-        Client.Send(MsgType.AddPlayer, new AddPlayerMsg(teamID));
+        var AddMsg = new AddPlayerMsg(teamID);
+        AddMsg.playerControllerId = (short)ClientScene.localPlayers.Count;
+        Client.Send(MsgType.AddPlayer, AddMsg);
         Client.RegisterHandler(MsgType.AddPlayer, (msg) =>
         {
             addPlayerCallback?.Invoke();
@@ -139,7 +140,7 @@ public class NetworkSystem : NetworkManager
         }
         //ClientScene.Ready(msg.conn);
         var player = Instantiate(team.PlayerPrefab, team.SpawnPosition, Quaternion.identity);
-        NetworkServer.AddPlayerForConnection(msg.conn, player, 0);
+        NetworkServer.AddPlayerForConnection(msg.conn, player, addMsg.playerControllerId);
         msg.conn.Send(MsgType.AddPlayer, new AddPlayerMessage());
         
     }
