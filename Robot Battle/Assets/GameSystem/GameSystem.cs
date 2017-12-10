@@ -9,33 +9,25 @@ public class GameSystem : Singleton<GameSystem> {
     public GameObject Controller;
     public bool GameStarted = false;
     public bool ControllerAttached = false;
-    private NetworkManager networkManager;
+    private NetworkSystem networkSystem;
 
     public GameObject PlayerObject;
-	// Use this for initialization
-	void Start ()
+
+    [SerializeField]
+    public Team[] AvailableTeams;
+    // Use this for initialization
+    void Start ()
 	{
         Current = this;
-        networkManager = GetComponent<NetworkManager>();
+	    networkSystem = NetworkSystem.Current;
+
 	}
-
-    public void HostGame(int port)
-    {
-        networkManager.matchPort = port;
-        networkManager.StartHost();
-    }
-
-    public void JoinGame(string host,int port)
-    {
-        networkManager.matchHost = host;
-        networkManager.matchPort = port;
-        networkManager.StartClient();
-    }
 
     public void GameStart(GameObject playerObj)
     {
         PlayerObject = playerObj;
         GameStarted = true;
+        MainGUI.Current.GameGUI.SetActive(true);
     }   
 
     public void ExitGame()
@@ -71,4 +63,5 @@ public class GameSystem : Singleton<GameSystem> {
 	    else
 	        Cursor.lockState = CursorLockMode.None;
 	}
+
 }

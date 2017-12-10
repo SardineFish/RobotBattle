@@ -7,6 +7,7 @@ public class MainGUI : Singleton<MainGUI> {
     public GameObject MainMenu;
     public GameObject PauseMenu;
     public GameObject DeathScreen;
+    public GameObject TeamSelect;
 	// Use this for initialization
 	void Start () {
         Current = this;

@@ -38,9 +38,11 @@ public class MainMenu : MonoBehaviour {
         {
 
         });*/
-        GameSystem.Current.HostGame(port);
-        gameObject.SetActive(false);
-        MainGUI.Current.GameGUI.SetActive(true);
+        NetworkSystem.Current.SetupHost(port, () =>
+        {
+            gameObject.SetActive(false);
+            MainGUI.Current.TeamSelect.SetActive(true);
+        });
     }
 
     public void ButtonJoinClick()
@@ -58,6 +60,10 @@ public class MainMenu : MonoBehaviour {
         {
 
         });*/
-        GameSystem.Current.JoinGame(host, port);
+        NetworkSystem.Current.Connect(host, port, () =>
+        {
+            gameObject.SetActive(false);
+            MainGUI.Current.TeamSelect.SetActive(true);
+        });
     }
 }

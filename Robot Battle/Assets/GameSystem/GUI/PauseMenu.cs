@@ -23,6 +23,8 @@ public class PauseMenu : MonoBehaviour {
 
     public void ButtonExitClick()
     {
-        
+        NetworkSystem.Current.Stop();
+        MainGUI.Current.MainMenu.SetActive(true);
+        gameObject.SetActive(false);
     }
 }
